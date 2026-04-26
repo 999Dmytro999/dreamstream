@@ -3,23 +3,23 @@ package com.dreamstream.helprequests.mapper;
 import com.dreamstream.helprequests.HelpRequestEntity;
 import com.dreamstream.helprequests.HelpRequestStatus;
 import com.dreamstream.helprequests.dto.CreateHelpRequestRequest;
+import com.dreamstream.helprequests.dto.HelpRequestCreatedByResponse;
 import com.dreamstream.helprequests.dto.HelpRequestResponse;
 import com.dreamstream.helprequests.dto.UpdateHelpRequestRequest;
+import com.dreamstream.users.UserEntity;
 import org.springframework.stereotype.Component;
-
-import java.util.UUID;
 
 @Component
 public class HelpRequestMapper {
 
-    public HelpRequestEntity toEntity(CreateHelpRequestRequest request, UUID ownerId) {
+    public HelpRequestEntity toEntity(CreateHelpRequestRequest request, UserEntity createdBy) {
         HelpRequestEntity entity = new HelpRequestEntity();
         entity.setTitle(request.title());
         entity.setDescription(request.description());
         entity.setCategory(request.category());
         entity.setLocation(request.location());
         entity.setStatus(HelpRequestStatus.OPEN);
-        entity.setOwnerId(ownerId);
+        entity.setCreatedBy(createdBy);
         return entity;
     }
 
@@ -41,7 +41,11 @@ public class HelpRequestMapper {
                 entity.getCategory(),
                 entity.getLocation(),
                 entity.getStatus(),
-                entity.getOwnerId(),
+                new HelpRequestCreatedByResponse(
+                        entity.getCreatedBy().getId(),
+                        entity.getCreatedBy().getFirstName(),
+                        entity.getCreatedBy().getLastName()
+                ),
                 entity.getCreatedAt(),
                 entity.getUpdatedAt()
         );

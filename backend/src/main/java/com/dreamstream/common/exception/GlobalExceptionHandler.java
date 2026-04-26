@@ -51,6 +51,19 @@ public class GlobalExceptionHandler {
     }
 
 
+    @ExceptionHandler(UnauthorizedException.class)
+    public ResponseEntity<ErrorResponse> handleUnauthorized(
+            UnauthorizedException ex,
+            jakarta.servlet.http.HttpServletRequest request
+    ) {
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(buildError(
+                "unauthorized",
+                ex.getMessage(),
+                Map.of(),
+                request.getRequestURI()
+        ));
+    }
+
     @ExceptionHandler(ForbiddenOperationException.class)
     public ResponseEntity<ErrorResponse> handleForbidden(
             ForbiddenOperationException ex,

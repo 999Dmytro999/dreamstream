@@ -1,0 +1,32 @@
+databaseChangeLog:
+  - changeSet:
+      id: 0005-enforce-user-names-not-null
+      author: codex
+      changes:
+        - addNotNullConstraint:
+            tableName: users
+            columnName: first_name
+            columnDataType: VARCHAR(100)
+        - addNotNullConstraint:
+            tableName: users
+            columnName: last_name
+            columnDataType: VARCHAR(100)
+
+  - changeSet:
+      id: 0005-rename-owner-id-to-created-by
+      author: codex
+      changes:
+        - dropForeignKeyConstraint:
+            baseTableName: help_requests
+            constraintName: fk_help_requests_owner_id
+        - renameColumn:
+            tableName: help_requests
+            oldColumnName: owner_id
+            newColumnName: created_by
+            columnDataType: UUID
+        - addForeignKeyConstraint:
+            baseTableName: help_requests
+            baseColumnNames: created_by
+            referencedTableName: users
+            referencedColumnNames: id
+            constraintName: fk_help_requests_created_by
