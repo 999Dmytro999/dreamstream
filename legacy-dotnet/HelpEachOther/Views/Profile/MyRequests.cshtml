@@ -1,0 +1,92 @@
+@model IEnumerable<HelpRequest>
+@{
+    ViewData["Title"] = "My Requests";
+    var selectedStatus = ViewBag.Status?.ToString();
+}
+
+<h2>My Created Requests</h2>
+
+<div class="card mb-3">
+    <div class="card-body">
+        <form method="get" asp-controller="Profile" asp-action="MyRequests" class="row g-2 align-items-end">
+            <div class="col-sm-4 col-md-3">
+                <label for="status" class="form-label">Status</label>
+                <select id="status" name="status" class="form-select">
+                    @if (string.IsNullOrEmpty(selectedStatus))
+                    {
+                        <option value="" selected>All</option>
+                    }
+                    else
+                    {
+                        <option value="">All</option>
+                    }
+
+                    @if (selectedStatus == nameof(HelpRequestStatus.Open))
+                    {
+                        <option value="Open" selected>Open</option>
+                    }
+                    else
+                    {
+                        <option value="Open">Open</option>
+                    }
+
+                    @if (selectedStatus == nameof(HelpRequestStatus.InProgress))
+                    {
+                        <option value="InProgress" selected>InProgress</option>
+                    }
+                    else
+                    {
+                        <option value="InProgress">InProgress</option>
+                    }
+
+                    @if (selectedStatus == nameof(HelpRequestStatus.Completed))
+                    {
+                        <option value="Completed" selected>Completed</option>
+                    }
+                    else
+                    {
+                        <option value="Completed">Completed</option>
+                    }
+                </select>
+            </div>
+            <div class="col-auto">
+                <button type="submit" class="btn btn-primary">Filter</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<table class="table table-striped">
+    <thead>
+    <tr>
+        <th>Title</th><th>Status</th><th>Helper</th><th>Created</th><th></th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var item in Model)
+    {
+        var badgeClass = item.Status switch
+        {
+            HelpRequestStatus.Open => "bg-primary",
+            HelpRequestStatus.InProgress => "bg-warning text-dark",
+            HelpRequestStatus.Completed => "bg-success",
+            _ => "bg-secondary"
+        };
+
+        <tr>
+            <td>@item.Title</td>
+            <td><span class="badge @badgeClass">@item.Status</span></td>
+            <td>@(item.Helper?.UserName ?? "-")</td>
+            <td>@item.CreatedAt.ToLocalTime().ToString("g")</td>
+            <td>
+                <a asp-controller="HelpRequests" asp-action="Details" asp-route-id="@item.Id" class="me-2">View</a>
+                @if (item.Status == HelpRequestStatus.Open)
+                {
+                    <a asp-controller="HelpRequests" asp-action="Edit" asp-route-id="@item.Id" class="me-2">Edit</a>
+                    <a asp-controller="HelpRequests" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                }
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>
