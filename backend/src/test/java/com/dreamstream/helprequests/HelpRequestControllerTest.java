@@ -43,6 +43,7 @@ class HelpRequestControllerTest {
                 HelpRequestCategory.TRANSPORTATION,
                 "Denver",
                 HelpRequestStatus.OPEN,
+                UUID.randomUUID(),
                 Instant.now(),
                 Instant.now()
         );
@@ -64,6 +65,7 @@ class HelpRequestControllerTest {
         );
 
         mockMvc.perform(post("/api/requests")
+                        .header("X-User-Id", UUID.randomUUID())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isBadRequest())

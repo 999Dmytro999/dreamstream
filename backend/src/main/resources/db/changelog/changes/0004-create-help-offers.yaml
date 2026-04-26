@@ -1,10 +1,10 @@
 databaseChangeLog:
   - changeSet:
-      id: 0001-initial-foundation
+      id: 0004-create-help-offers
       author: codex
       changes:
         - createTable:
-            tableName: users
+            tableName: help_offers
             columns:
               - column:
                   name: id
@@ -13,24 +13,22 @@ databaseChangeLog:
                     nullable: false
                     primaryKey: true
               - column:
-                  name: email
-                  type: VARCHAR(255)
-                  constraints:
-                    nullable: false
-                    unique: true
-              - column:
-                  name: password_hash
-                  type: VARCHAR(255)
+                  name: help_request_id
+                  type: UUID
                   constraints:
                     nullable: false
               - column:
-                  name: first_name
-                  type: VARCHAR(100)
+                  name: offered_by
+                  type: UUID
+                  constraints:
+                    nullable: false
               - column:
-                  name: last_name
-                  type: VARCHAR(100)
+                  name: message
+                  type: TEXT
+                  constraints:
+                    nullable: false
               - column:
-                  name: role
+                  name: status
                   type: VARCHAR(50)
                   constraints:
                     nullable: false
@@ -44,12 +42,15 @@ databaseChangeLog:
                   type: TIMESTAMP WITH TIME ZONE
                   constraints:
                     nullable: false
-
-  - include:
-      file: db/changelog/changes/0002-create-help-requests.yaml
-
-  - include:
-      file: db/changelog/changes/0003-add-owner-id-to-help-requests.yaml
-
-  - include:
-      file: db/changelog/changes/0004-create-help-offers.yaml
+        - addForeignKeyConstraint:
+            baseTableName: help_offers
+            baseColumnNames: help_request_id
+            referencedTableName: help_requests
+            referencedColumnNames: id
+            constraintName: fk_help_offers_help_request
+        - addForeignKeyConstraint:
+            baseTableName: help_offers
+            baseColumnNames: offered_by
+            referencedTableName: users
+            referencedColumnNames: id
+            constraintName: fk_help_offers_offered_by

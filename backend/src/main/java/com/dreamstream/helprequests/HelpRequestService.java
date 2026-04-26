@@ -30,8 +30,8 @@ public class HelpRequestService {
     }
 
     @Transactional
-    public HelpRequestResponse create(CreateHelpRequestRequest request) {
-        HelpRequestEntity saved = repository.save(mapper.toEntity(request));
+    public HelpRequestResponse create(CreateHelpRequestRequest request, UUID ownerId) {
+        HelpRequestEntity saved = repository.save(mapper.toEntity(request, ownerId));
         return mapper.toResponse(saved);
     }
 
