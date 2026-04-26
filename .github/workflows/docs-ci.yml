@@ -1,0 +1,42 @@
+name: Docs CI
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'docs/**'
+      - 'README.md'
+      - 'AGENTS.md'
+      - '.github/workflows/**'
+  pull_request:
+    paths:
+      - 'docs/**'
+      - 'README.md'
+      - 'AGENTS.md'
+      - '.github/workflows/**'
+
+jobs:
+  docs-validation:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Verify required documentation files exist and are not empty
+        run: |
+          required_files=(
+            "AGENTS.md"
+            "docs/architecture.md"
+            "docs/migration-plan.md"
+            "docs/product-requirements.md"
+          )
+
+          for file in "${required_files[@]}"; do
+            if [ ! -s "$file" ]; then
+              echo "Required file missing or empty: $file"
+              exit 1
+            fi
+          done
+
+          echo "All required documentation files are present and non-empty."
