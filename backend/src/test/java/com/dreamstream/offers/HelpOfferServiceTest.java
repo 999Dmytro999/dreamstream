@@ -5,6 +5,7 @@ import com.dreamstream.common.exception.ResourceNotFoundException;
 import com.dreamstream.helprequests.HelpRequestEntity;
 import com.dreamstream.helprequests.HelpRequestRepository;
 import com.dreamstream.offers.dto.CreateHelpOfferRequest;
+import com.dreamstream.users.UserEntity;
 import com.dreamstream.offers.mapper.HelpOfferMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -45,7 +46,9 @@ class HelpOfferServiceTest {
 
         HelpRequestEntity helpRequest = new HelpRequestEntity();
         helpRequest.setId(requestId);
-        helpRequest.setOwnerId(ownerId);
+        UserEntity owner = new UserEntity();
+        owner.setId(ownerId);
+        helpRequest.setCreatedBy(owner);
 
         HelpOfferEntity savedOffer = new HelpOfferEntity();
         savedOffer.setId(UUID.randomUUID());
@@ -71,7 +74,9 @@ class HelpOfferServiceTest {
 
         HelpRequestEntity helpRequest = new HelpRequestEntity();
         helpRequest.setId(UUID.randomUUID());
-        helpRequest.setOwnerId(UUID.randomUUID());
+        UserEntity owner = new UserEntity();
+        owner.setId(UUID.randomUUID());
+        helpRequest.setCreatedBy(owner);
 
         HelpOfferEntity offer = new HelpOfferEntity();
         offer.setId(offerId);

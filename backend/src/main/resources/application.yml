@@ -18,3 +18,8 @@ spring:
 
 server:
   port: ${SERVER_PORT:8080}
+
+app:
+  jwt:
+    secret: ${JWT_SECRET:ZHJlYW1zdHJlYW0tZGV2LXNlY3JldC1kcmVhbXN0cmVhbS0yMDI2LTA0LTI2}
+    expiration-seconds: ${JWT_EXPIRATION_SECONDS:86400}

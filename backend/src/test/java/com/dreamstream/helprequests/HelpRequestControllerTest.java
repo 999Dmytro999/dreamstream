@@ -1,12 +1,15 @@
 package com.dreamstream.helprequests;
 
 import com.dreamstream.helprequests.dto.CreateHelpRequestRequest;
+import com.dreamstream.helprequests.dto.HelpRequestCreatedByResponse;
 import com.dreamstream.helprequests.dto.HelpRequestResponse;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import com.dreamstream.security.JwtAuthenticationFilter;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
@@ -22,6 +25,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(HelpRequestController.class)
+@AutoConfigureMockMvc(addFilters = false)
 @Import(com.dreamstream.common.exception.GlobalExceptionHandler.class)
 class HelpRequestControllerTest {
 
@@ -30,6 +34,9 @@ class HelpRequestControllerTest {
 
     @Autowired
     private ObjectMapper objectMapper;
+
+    @MockBean
+    private JwtAuthenticationFilter jwtAuthenticationFilter;
 
     @MockBean
     private HelpRequestService service;
@@ -43,7 +50,7 @@ class HelpRequestControllerTest {
                 HelpRequestCategory.TRANSPORTATION,
                 "Denver",
                 HelpRequestStatus.OPEN,
-                UUID.randomUUID(),
+                new HelpRequestCreatedByResponse(UUID.randomUUID(), "Jane", "Doe"),
                 Instant.now(),
                 Instant.now()
         );
@@ -65,7 +72,6 @@ class HelpRequestControllerTest {
         );
 
         mockMvc.perform(post("/api/requests")
-                        .header("X-User-Id", UUID.randomUUID())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isBadRequest())

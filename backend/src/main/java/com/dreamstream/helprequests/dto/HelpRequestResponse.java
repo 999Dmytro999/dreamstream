@@ -13,7 +13,7 @@ public record HelpRequestResponse(
         HelpRequestCategory category,
         String location,
         HelpRequestStatus status,
-        UUID ownerId,
+        HelpRequestCreatedByResponse createdBy,
         Instant createdAt,
         Instant updatedAt
 ) {

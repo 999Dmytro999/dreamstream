@@ -35,7 +35,7 @@ public class HelpOfferService {
     public HelpOfferResponse createOffer(UUID requestId, UUID currentUserId, CreateHelpOfferRequest request) {
         HelpRequestEntity helpRequest = getHelpRequestById(requestId);
 
-        if (helpRequest.getOwnerId().equals(currentUserId)) {
+        if (helpRequest.getCreatedBy().getId().equals(currentUserId)) {
             throw new ConflictException("Request owner cannot create an offer on their own request");
         }
 
@@ -85,7 +85,7 @@ public class HelpOfferService {
     }
 
     private void ensureRequestOwner(HelpOfferEntity offer, UUID currentUserId) {
-        UUID ownerId = offer.getHelpRequest().getOwnerId();
+        UUID ownerId = offer.getHelpRequest().getCreatedBy().getId();
         if (!ownerId.equals(currentUserId)) {
             throw new ForbiddenOperationException("Only the request owner can perform this action");
         }

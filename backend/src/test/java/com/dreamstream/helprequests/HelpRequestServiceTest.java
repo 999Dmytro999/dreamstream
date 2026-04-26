@@ -4,6 +4,8 @@ import com.dreamstream.common.exception.ResourceNotFoundException;
 import com.dreamstream.helprequests.dto.CreateHelpRequestRequest;
 import com.dreamstream.helprequests.dto.UpdateHelpRequestRequest;
 import com.dreamstream.helprequests.mapper.HelpRequestMapper;
+import com.dreamstream.users.UserEntity;
+import com.dreamstream.users.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -26,6 +28,9 @@ class HelpRequestServiceTest {
     @Mock
     private HelpRequestRepository repository;
 
+    @Mock
+    private UserRepository userRepository;
+
     private HelpRequestMapper mapper;
 
     @InjectMocks
@@ -34,7 +39,7 @@ class HelpRequestServiceTest {
     @BeforeEach
     void setUp() {
         mapper = new HelpRequestMapper();
-        service = new HelpRequestService(repository, mapper);
+        service = new HelpRequestService(repository, mapper, userRepository);
     }
 
     @Test
@@ -46,7 +51,11 @@ class HelpRequestServiceTest {
                 "Austin"
         );
 
-        UUID ownerId = UUID.randomUUID();
+        UUID userId = UUID.randomUUID();
+        UserEntity user = new UserEntity();
+        user.setId(userId);
+        user.setFirstName("Ada");
+        user.setLastName("Lovelace");
 
         HelpRequestEntity saved = new HelpRequestEntity();
         saved.setId(UUID.randomUUID());
@@ -55,11 +64,12 @@ class HelpRequestServiceTest {
         saved.setCategory(request.category());
         saved.setLocation(request.location());
         saved.setStatus(HelpRequestStatus.OPEN);
-        saved.setOwnerId(ownerId);
+        saved.setCreatedBy(user);
 
+        when(userRepository.findById(userId)).thenReturn(Optional.of(user));
         when(repository.save(any(HelpRequestEntity.class))).thenReturn(saved);
 
-        var response = service.create(request, ownerId);
+        var response = service.create(request, userId);
 
         assertEquals(saved.getId(), response.id());
         assertEquals("Need groceries", response.title());
@@ -80,6 +90,6 @@ class HelpRequestServiceTest {
 
         when(repository.findById(id)).thenReturn(Optional.empty());
 
-        assertThrows(ResourceNotFoundException.class, () -> service.update(id, request));
+        assertThrows(ResourceNotFoundException.class, () -> service.update(id, UUID.randomUUID(), request));
     }
 }
