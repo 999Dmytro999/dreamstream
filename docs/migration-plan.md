@@ -2,248 +2,284 @@
 
 ## Goal
 
-Migrate the old HelpEachOther .NET MVC/Razor application into a new DreamStream application built with Spring Boot and Angular.
+Migrate the legacy `HelpEachOther` ASP.NET MVC/Razor application (`legacy-dotnet/HelpEachOther/`) into DreamStream with:
 
-## Old Project
+- Spring Boot backend (`backend/`)
+- Angular frontend (`frontend/`)
+- PostgreSQL + Liquibase
 
-Name:
+This document captures the **current legacy implementation** and a concrete migration target for MVP.
 
-```text
-HelpEachOther
-```
+---
 
-Technology:
+## Current Legacy Features (from code inspection)
 
-- .NET
-- MVC/Razor views
-- server-rendered pages
+1. **Authentication (ASP.NET Core Identity)**
+   - Register, login, logout flows via Identity Razor Pages.
+   - Auto sign-in after successful registration.
+   - No confirmed-account requirement.
 
-Location in repository:
+2. **Help request lifecycle**
+   - Public list of help requests with optional status filter (`Open`, `InProgress`, `Completed`).
+   - Public request details page.
+   - Authenticated users can create requests.
+   - Owners can edit/delete only when request is `Open`.
+   - Non-owner authenticated users can volunteer for an `Open` request.
+   - Owner can mark `InProgress` request as completed.
 
-```text
-legacy-dotnet/HelpEachOther/
-```
+3. **Soul Points rule**
+   - When owner completes an in-progress request, assigned helper gains **10 Soul Points**.
+   - Rule is centralized in `Services/HelpRequestService.cs`.
 
-The old project should be used only as a reference.
+4. **Profile and personal activity**
+   - Profile summary includes username/display name, soul points, request/help stats.
+   - “My Requests” page (owner perspective, optional status filter).
+   - “My Helping” page (requests user volunteered for).
 
-## New Project
+5. **Home dashboard metrics**
+   - Landing page shows open and completed request counts.
 
-Name:
+6. **Seed/demo behavior**
+   - On startup: applies migrations and seeds demo user + sample requests if none exist.
 
-```text
-DreamStream
-```
+---
 
-Technology:
+## Current Legacy Controllers
 
-- Spring Boot backend
-- Angular frontend
-- PostgreSQL database
-- REST API
-- Liquibase migrations
+### MVC Controllers
 
-## Migration Strategy
+- `Controllers/HomeController.cs`
+  - `Index()` → homepage stats (open/completed counts).
 
-Do not rewrite everything at once.
+- `Controllers/HelpRequestsController.cs`
+  - `Index(HelpRequestStatus? status)`
+  - `Details(int id)`
+  - `Create()` (GET)
+  - `Create(CreateHelpRequestViewModel model)` (POST)
+  - `Edit(int id)` (GET)
+  - `Edit(int id, EditHelpRequestViewModel model)` (POST)
+  - `Delete(int id)` (GET)
+  - `DeleteConfirmed(int id)` (POST)
+  - `Volunteer(int id)` (POST)
+  - `Complete(int id)` (POST)
 
-First, analyze the old project.
+- `Controllers/ProfileController.cs` (authorized)
+  - `Index()`
+  - `MyRequests(HelpRequestStatus? status)`
+  - `MyHelping()`
 
-Then build the new DreamStream application feature by feature.
+### Identity Razor Page Model
 
-## Phase 1: Legacy Analysis
+- `Areas/Identity/Pages/Account/Register.cshtml.cs`
+  - `OnGet()`
+  - `OnPostAsync()`
 
-Inspect the HelpEachOther project and document:
+> Login/logout functionality is provided by ASP.NET Identity UI, but only Register page is explicitly scaffolded in this repo.
 
-- controllers
-- models
-- views
-- database entities
-- forms
-- validation rules
-- user flows
-- existing features
-- missing or broken functionality
+---
 
-Output should be added to this file.
+## Current Legacy Models / Entities
 
-## Phase 2: Backend Foundation
+### Domain + identity models
 
-Create Spring Boot backend foundation inside:
+- `Models/ApplicationUser.cs`
+  - Extends `IdentityUser`
+  - Fields: `DisplayName`, `SoulPoints`, `CreatedAt`
+  - Navigation: `CreatedRequests`, `AcceptedRequests`
 
-```text
-backend/
-```
+- `Models/HelpRequest.cs`
+  - Fields: `Id`, `Title`, `Description`, `Category`, `City`, `Status`, `CreatedAt`, `CompletedAt`, `OwnerId`, `HelperId`
+  - Navigation: `Owner`, `Helper`
 
-Include:
+- `Models/HelpRequestStatus.cs` (enum)
+  - `Open`, `InProgress`, `Completed`
 
-- Maven setup
-- PostgreSQL config
-- Liquibase config
-- global exception handler
-- CORS config for Angular
-- basic health endpoint
-- feature-based package structure
+- `Models/HelpCategories.cs`
+  - Static categories list: Groceries, Transport, Moving, Household, Emotional Support, Other
 
-## Phase 3: Core Domain Models
+### View models
 
-Create the first domain models:
+- `ViewModels/CreateHelpRequestViewModel.cs`
+- `ViewModels/EditHelpRequestViewModel.cs`
+- `ViewModels/ProfileViewModel.cs`
 
-- User
-- HelpRequest
-- HelpOffer
+### EF Core context and schema
 
-Recommended Java package modules:
+- `Data/ApplicationDbContext.cs`
+  - `DbSet<HelpRequest>`
+  - Owner and Helper relations to `ApplicationUser` (restrict delete)
 
-```text
-auth
-users
-helprequests
-offers
-common
-config
-```
+- `Data/Migrations/20260403053555_InitialCreate.cs`
+  - Tables: `HelpRequests` + ASP.NET Identity tables (`AspNetUsers`, `AspNetRoles`, etc.)
 
-## Phase 4: Help Request API
+---
 
-Create REST endpoints:
+## Current Legacy Pages / Views
 
-```text
-GET    /api/requests
-POST   /api/requests
-GET    /api/requests/{id}
-PUT    /api/requests/{id}
-DELETE /api/requests/{id}
-GET    /api/my-requests
-```
+### MVC Views
 
-For the first version, a temporary mocked current user service is acceptable.
+- Home:
+  - `Views/Home/Index.cshtml`
 
-## Phase 5: Angular Foundation
+- Help requests:
+  - `Views/HelpRequests/Index.cshtml`
+  - `Views/HelpRequests/Details.cshtml`
+  - `Views/HelpRequests/Create.cshtml`
+  - `Views/HelpRequests/Edit.cshtml`
+  - `Views/HelpRequests/Delete.cshtml`
 
-Create Angular frontend inside:
+- Profile:
+  - `Views/Profile/Index.cshtml`
+  - `Views/Profile/MyRequests.cshtml`
+  - `Views/Profile/MyHelping.cshtml`
 
-```text
-frontend/
-```
+- Shared/layout:
+  - `Views/Shared/_Layout.cshtml`
+  - `Views/Shared/_LoginPartial.cshtml`
+  - `Views/Shared/Error.cshtml`
 
-Add:
+### Identity Razor Pages
 
-- routing
-- layout
-- header/navbar
-- API service
-- request list page
-- request details page
-- create request page
-
-## Phase 6: Authentication
-
-Add:
-
-- registration
-- login
-- password hashing
-- JWT authentication
-- authenticated current user endpoint
-- route guards in Angular
-
-Endpoints:
-
-```text
-POST /api/auth/register
-POST /api/auth/login
-GET  /api/me
-```
-
-## Phase 7: Offer Help Flow
-
-Add ability for users to offer help.
-
-Endpoints:
-
-```text
-POST /api/requests/{id}/offers
-GET  /api/my-offers
-PUT  /api/offers/{id}/accept
-PUT  /api/offers/{id}/decline
-```
-
-## Phase 8: Polish MVP
-
-Improve:
-
-- validation messages
-- empty states
-- loading states
-- error handling
-- responsive layout
-- user profile page
-- request status badges
-
-## Phase 9: Future Features
-
-Later features:
-
-- soul points
-- notifications
-- messaging
-- admin dashboard
-- request verification
-- donations
-- microservices
-- AI matching
-
-## MVP Implementation Order
-
-Recommended order:
-
-1. Set up monorepo structure.
-2. Add documentation files.
-3. Add legacy HelpEachOther project under `legacy-dotnet/HelpEachOther/`.
-4. Ask Codex to analyze the legacy project.
-5. Ask Codex to update this migration plan with real findings from the legacy code.
-6. Build Spring Boot backend foundation.
-7. Build first HelpRequest API.
-8. Build Angular frontend foundation.
-9. Connect Angular to backend.
-10. Add authentication.
-11. Add offer help flow.
-
-## First Codex Task
-
-Use this prompt:
-
-```text
-Review this repository and prepare a migration summary.
-
-Context:
-This is a monorepo for DreamStream.
-- backend/ contains the new Spring Boot Maven backend.
-- frontend/ will contain the Angular frontend.
-- legacy-dotnet/HelpEachOther/ contains the old .NET MVC/Razor application and should be used only as a reference.
-- docs/ contains project documentation.
-
-Task:
-1. Inspect the legacy-dotnet/HelpEachOther application.
-2. Identify the main features, pages, models, controllers, and database entities.
-3. Update docs/migration-plan.md with:
-   - current legacy features
-   - target Spring Boot modules
-   - target Angular pages
-   - suggested REST API endpoints
-   - recommended MVP implementation order
-4. Do not modify backend or frontend code yet.
-5. Do not modify legacy-dotnet/HelpEachOther.
-```
-
-## Notes for Codex
-
-When analyzing the legacy HelpEachOther project:
-
-- Do not rewrite code immediately.
-- Do not change files in `legacy-dotnet/HelpEachOther/`.
-- First document what already exists.
-- Identify which features are useful for DreamStream.
-- Identify which features should be redesigned.
-- Keep DreamStream clean and simple.
-- Prioritize MVP functionality before advanced features.
+- `Areas/Identity/Pages/Account/Register.cshtml`
+- (plus default Identity pages not explicitly scaffolded in this repository)
+
+---
+
+## Target Spring Boot Modules (Modular Monolith)
+
+Recommended modules aligned with AGENTS.md architecture direction and legacy behavior:
+
+1. `auth`
+   - Registration/login, token issuance, current-user context.
+
+2. `users`
+   - User profile data (display name, soul points, user summary).
+
+3. `helprequests`
+   - CRUD + lifecycle state transitions for help requests.
+
+4. `offers`
+   - Volunteer/offer workflow (assign helper, list my helping).
+
+5. `points`
+   - Soul Points awarding rules and audit-ready point transactions (optional lightweight table now, extensible later).
+
+6. `common`
+   - Shared error model, validation handling, base response patterns, utilities.
+
+7. `notifications` (deferred)
+   - Keep as placeholder module for later event notifications.
+
+8. `admin` (deferred)
+   - Placeholder for moderation/admin functionality post-MVP.
+
+---
+
+## Target Angular Pages
+
+1. Public
+   - Home dashboard
+   - Help request list (with status filter)
+   - Help request details
+
+2. Authentication
+   - Register
+   - Login
+
+3. Authenticated request management
+   - Create help request
+   - Edit own help request (open only)
+   - Delete confirmation flow
+
+4. Profile area
+   - My profile (stats, soul points)
+   - My requests (created by me, with status filter)
+   - My helping (accepted/assigned requests)
+
+5. Shared UX
+   - Header/nav with auth state
+   - Toast/alert components for success/error messages
+
+---
+
+## Suggested REST API Endpoints (MVP)
+
+All endpoints under `/api`.
+
+### Auth
+
+- `POST /api/auth/register`
+- `POST /api/auth/login`
+- `POST /api/auth/logout` (if session/cookie approach)
+- `GET /api/auth/me`
+
+### Users / profile
+
+- `GET /api/users/me`
+- `PATCH /api/users/me` (display name/profile edits)
+- `GET /api/users/me/stats`
+
+### Help requests
+
+- `GET /api/help-requests?status=OPEN|IN_PROGRESS|COMPLETED&owner=me&helper=me`
+- `POST /api/help-requests`
+- `GET /api/help-requests/{id}`
+- `PUT /api/help-requests/{id}` (owner only, open only)
+- `DELETE /api/help-requests/{id}` (owner only, open only)
+
+### Offer/help flow
+
+- `POST /api/help-requests/{id}/volunteer` (assign current user as helper)
+- `POST /api/help-requests/{id}/complete` (owner completes; awards points)
+
+### Optional compatibility/readability endpoints
+
+- `GET /api/me/requests` (maps to filtered help-requests)
+- `GET /api/me/helping` (maps to filtered help-requests)
+
+---
+
+## Recommended MVP Implementation Order
+
+1. **Domain and schema foundation**
+   - Define `users`, `help_requests`, and optional `point_transactions` tables with Liquibase.
+   - Use UUID primary keys in new system (even though legacy used int/string identity IDs).
+
+2. **Auth module**
+   - Implement register/login/current-user endpoints.
+   - Wire security config and request authentication.
+
+3. **Help requests: read side**
+   - Implement list + details endpoints with status filtering.
+   - Build Angular list/details pages.
+
+4. **Help requests: write side**
+   - Implement create + edit + delete rules (owner-only, open-only).
+   - Build Angular create/edit/delete flows.
+
+5. **Volunteer/offer flow**
+   - Implement volunteer assignment endpoint and in-progress transition.
+   - Build Angular action on details page.
+
+6. **Completion + points rule**
+   - Implement owner completion endpoint.
+   - Award 10 points to helper (single atomic transaction).
+
+7. **Profile and activity pages**
+   - Implement `/me` stats and filtered “my requests / my helping” queries.
+   - Build Angular profile pages.
+
+8. **MVP hardening**
+   - Validation + global exception handler + consistent error responses.
+   - Authorization tests for ownership/state transitions.
+   - Improve UX states (loading/error/empty).
+
+---
+
+## Legacy-to-New Mapping Notes
+
+- Legacy concept **HelpRequest + Volunteer** can be modeled either as:
+  - direct `helperId` on request (legacy-compatible), or
+  - separate `offer` records with one accepted offer (more extensible).
+- For rapid MVP parity, keep direct assignment semantics while implementing within `offers` module boundaries.
+- Legacy ASP.NET Identity schema should not be copied directly; only business-relevant fields/flows should be ported.
