@@ -51,6 +51,34 @@ public class GlobalExceptionHandler {
     }
 
 
+    @ExceptionHandler(ForbiddenOperationException.class)
+    public ResponseEntity<ErrorResponse> handleForbidden(
+            ForbiddenOperationException ex,
+            jakarta.servlet.http.HttpServletRequest request
+    ) {
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(buildError(
+                "forbidden",
+                ex.getMessage(),
+                Map.of(),
+                request.getRequestURI()
+        ));
+    }
+
+    @ExceptionHandler(ConflictException.class)
+    public ResponseEntity<ErrorResponse> handleConflict(
+            ConflictException ex,
+            jakarta.servlet.http.HttpServletRequest request
+    ) {
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(buildError(
+                "conflict",
+                ex.getMessage(),
+                Map.of(),
+                request.getRequestURI()
+        ));
+    }
+
+
+
     @ExceptionHandler(ResourceNotFoundException.class)
     public ResponseEntity<ErrorResponse> handleResourceNotFound(
             ResourceNotFoundException ex,

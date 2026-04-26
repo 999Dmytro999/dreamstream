@@ -46,6 +46,8 @@ class HelpRequestServiceTest {
                 "Austin"
         );
 
+        UUID ownerId = UUID.randomUUID();
+
         HelpRequestEntity saved = new HelpRequestEntity();
         saved.setId(UUID.randomUUID());
         saved.setTitle(request.title());
@@ -53,10 +55,11 @@ class HelpRequestServiceTest {
         saved.setCategory(request.category());
         saved.setLocation(request.location());
         saved.setStatus(HelpRequestStatus.OPEN);
+        saved.setOwnerId(ownerId);
 
         when(repository.save(any(HelpRequestEntity.class))).thenReturn(saved);
 
-        var response = service.create(request);
+        var response = service.create(request, ownerId);
 
         assertEquals(saved.getId(), response.id());
         assertEquals("Need groceries", response.title());

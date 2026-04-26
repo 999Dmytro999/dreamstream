@@ -7,16 +7,19 @@ import com.dreamstream.helprequests.dto.HelpRequestResponse;
 import com.dreamstream.helprequests.dto.UpdateHelpRequestRequest;
 import org.springframework.stereotype.Component;
 
+import java.util.UUID;
+
 @Component
 public class HelpRequestMapper {
 
-    public HelpRequestEntity toEntity(CreateHelpRequestRequest request) {
+    public HelpRequestEntity toEntity(CreateHelpRequestRequest request, UUID ownerId) {
         HelpRequestEntity entity = new HelpRequestEntity();
         entity.setTitle(request.title());
         entity.setDescription(request.description());
         entity.setCategory(request.category());
         entity.setLocation(request.location());
         entity.setStatus(HelpRequestStatus.OPEN);
+        entity.setOwnerId(ownerId);
         return entity;
     }
 
@@ -38,6 +41,7 @@ public class HelpRequestMapper {
                 entity.getCategory(),
                 entity.getLocation(),
                 entity.getStatus(),
+                entity.getOwnerId(),
                 entity.getCreatedAt(),
                 entity.getUpdatedAt()
         );
