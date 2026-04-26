@@ -1,5 +1,6 @@
 package com.dreamstream.offers;
 
+import com.dreamstream.common.exception.ConflictException;
 import com.dreamstream.common.exception.ForbiddenOperationException;
 import com.dreamstream.common.exception.ResourceNotFoundException;
 import com.dreamstream.helprequests.HelpRequestEntity;
@@ -87,6 +88,38 @@ class HelpOfferServiceTest {
         when(helpOfferRepository.findById(offerId)).thenReturn(Optional.of(offer));
 
         assertThrows(ForbiddenOperationException.class, () -> helpOfferService.acceptOffer(offerId, UUID.randomUUID()));
+    }
+
+    @Test
+    void createOfferShouldFailWhenUserIsRequestOwner() {
+        UUID requestId = UUID.randomUUID();
+        UUID ownerId = UUID.randomUUID();
+
+        HelpRequestEntity helpRequest = new HelpRequestEntity();
+        helpRequest.setId(requestId);
+        UserEntity owner = new UserEntity();
+        owner.setId(ownerId);
+        helpRequest.setCreatedBy(owner);
+
+        when(helpRequestRepository.findById(requestId)).thenReturn(Optional.of(helpRequest));
+
+        assertThrows(ConflictException.class,
+                () -> helpOfferService.createOffer(requestId, ownerId, new CreateHelpOfferRequest("I can help")));
+    }
+
+    @Test
+    void cancelOfferShouldFailForNonCreator() {
+        UUID offerId = UUID.randomUUID();
+        UUID offeredBy = UUID.randomUUID();
+
+        HelpOfferEntity offer = new HelpOfferEntity();
+        offer.setId(offerId);
+        offer.setOfferedBy(offeredBy);
+        offer.setStatus(HelpOfferStatus.PENDING);
+
+        when(helpOfferRepository.findById(offerId)).thenReturn(Optional.of(offer));
+
+        assertThrows(ForbiddenOperationException.class, () -> helpOfferService.cancelOffer(offerId, UUID.randomUUID()));
     }
 
     @Test

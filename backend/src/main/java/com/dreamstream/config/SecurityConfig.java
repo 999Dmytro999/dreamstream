@@ -26,8 +26,11 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/auth/register", "/api/auth/login", "/actuator/health", "/api/health").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/requests/**").authenticated()
+                        .requestMatchers(HttpMethod.POST, "/api/requests/**/offers").authenticated()
                         .requestMatchers(HttpMethod.PUT, "/api/requests/**").authenticated()
                         .requestMatchers(HttpMethod.DELETE, "/api/requests/**").authenticated()
+                        .requestMatchers(HttpMethod.GET, "/api/my-offers").authenticated()
+                        .requestMatchers(HttpMethod.PUT, "/api/offers/**").authenticated()
                         .anyRequest().permitAll()
                 )
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);

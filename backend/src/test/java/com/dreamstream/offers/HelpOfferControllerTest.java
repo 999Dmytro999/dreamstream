@@ -2,7 +2,10 @@ package com.dreamstream.offers;
 
 import com.dreamstream.offers.dto.CreateHelpOfferRequest;
 import com.dreamstream.offers.dto.HelpOfferResponse;
+import com.dreamstream.security.CurrentUser;
+import com.dreamstream.users.UserRole;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -11,6 +14,8 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import com.dreamstream.security.JwtAuthenticationFilter;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.time.Instant;
@@ -42,6 +47,11 @@ class HelpOfferControllerTest {
     @MockBean
     private HelpOfferService helpOfferService;
 
+    @AfterEach
+    void tearDown() {
+        SecurityContextHolder.clearContext();
+    }
+
     @Test
     void createOfferShouldReturnCreated() throws Exception {
         UUID requestId = UUID.randomUUID();
@@ -60,8 +70,14 @@ class HelpOfferControllerTest {
         when(helpOfferService.createOffer(eq(requestId), eq(currentUserId), any(CreateHelpOfferRequest.class)))
                 .thenReturn(response);
 
+        SecurityContextHolder.getContext().setAuthentication(
+                new UsernamePasswordAuthenticationToken(
+                        new CurrentUser(currentUserId, "offerer@example.com", UserRole.USER),
+                        null
+                )
+        );
+
         mockMvc.perform(post("/api/requests/{requestId}/offers", requestId)
-                        .header("X-User-Id", currentUserId)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(new CreateHelpOfferRequest("I can help"))))
                 .andExpect(status().isCreated())
@@ -83,7 +99,14 @@ class HelpOfferControllerTest {
                 )
         ));
 
-        mockMvc.perform(get("/api/my-offers").header("X-User-Id", currentUserId))
+        SecurityContextHolder.getContext().setAuthentication(
+                new UsernamePasswordAuthenticationToken(
+                        new CurrentUser(currentUserId, "offerer@example.com", UserRole.USER),
+                        null
+                )
+        );
+
+        mockMvc.perform(get("/api/my-offers"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$[0].message").value("Offer message"));
     }
