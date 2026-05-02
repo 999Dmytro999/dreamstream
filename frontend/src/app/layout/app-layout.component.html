@@ -1,0 +1,33 @@
+<div class="shell">
+  <header class="topbar">
+    <div class="brand">
+      <a routerLink="/" class="brand-link">DreamStream</a>
+      <span class="brand-tag">Help requests and offers</span>
+    </div>
+
+    <nav class="nav">
+      <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Home</a>
+      <a routerLink="/requests" routerLinkActive="active">Requests</a>
+      <a routerLink="/requests/new" routerLinkActive="active">Create</a>
+      <a routerLink="/my-requests" routerLinkActive="active">My Requests</a>
+      <a routerLink="/my-offers" routerLinkActive="active">My Offers</a>
+      <a routerLink="/profile" routerLinkActive="active">Profile</a>
+      <a routerLink="/login" routerLinkActive="active">Login</a>
+      <a routerLink="/register" routerLinkActive="active">Register</a>
+    </nav>
+
+    <div class="user-panel">
+      <ng-container *ngIf="currentUser$ | async as user; else guestState">
+        <span class="user-name">{{ user.displayName || user.email }}</span>
+        <button type="button" class="button button-secondary" (click)="logout()">Logout</button>
+      </ng-container>
+      <ng-template #guestState>
+        <span class="user-name muted">Guest</span>
+      </ng-template>
+    </div>
+  </header>
+
+  <main class="content">
+    <router-outlet />
+  </main>
+</div>

@@ -1,0 +1,31 @@
+<section class="page">
+  <div class="page-header">
+    <div>
+      <h1 class="page-title">Profile</h1>
+      <p class="page-subtitle">A quick view of your account and activity.</p>
+    </div>
+  </div>
+
+  <div *ngIf="loading" class="panel">Loading profile...</div>
+
+  <div *ngIf="!loading" class="grid two">
+    <article class="panel">
+      <h2>{{ user?.displayName || user?.email || 'Your profile' }}</h2>
+      <p class="hint">{{ user?.email }}</p>
+      <p class="hint" *ngIf="user?.role">Role: {{ user?.role }}</p>
+    </article>
+
+    <article class="panel">
+      <h2>Activity</h2>
+      <p><strong>{{ myRequestsCount }}</strong> my requests</p>
+      <p><strong>{{ myOffersCount }}</strong> my offers</p>
+      <p><strong>{{ user?.soulPoints ?? 0 }}</strong> soul points</p>
+    </article>
+  </div>
+
+  <div class="actions">
+    <a routerLink="/my-requests" class="secondary-button">My Requests</a>
+    <a routerLink="/my-offers" class="secondary-button">My Offers</a>
+    <a routerLink="/requests/new" class="primary-button">Create request</a>
+  </div>
+</section>

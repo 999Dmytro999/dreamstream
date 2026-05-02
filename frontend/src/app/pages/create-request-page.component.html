@@ -1,0 +1,43 @@
+<section class="page">
+  <div class="page-header">
+    <div>
+      <h1 class="page-title">Create Request</h1>
+      <p class="page-subtitle">Write a clear request so people can understand what you need.</p>
+    </div>
+  </div>
+
+  <form class="panel form" (ngSubmit)="submit()">
+    <div class="field">
+      <label for="title">Title</label>
+      <input id="title" name="title" [(ngModel)]="model.title" required />
+    </div>
+
+    <div class="grid two">
+      <div class="field">
+        <label for="category">Category</label>
+        <select id="category" name="category" [(ngModel)]="model.category">
+          <option *ngFor="let category of categories" [value]="category">{{ category }}</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label for="location">Location</label>
+        <input id="location" name="location" [(ngModel)]="model.location" />
+      </div>
+    </div>
+
+    <div class="field">
+      <label for="description">Description</label>
+      <textarea id="description" name="description" [(ngModel)]="model.description" required></textarea>
+    </div>
+
+    <p *ngIf="error" class="empty-state">{{ error }}</p>
+
+    <div class="actions">
+      <button type="submit" class="primary-button" [disabled]="loading">
+        {{ loading ? 'Creating...' : 'Create request' }}
+      </button>
+      <a routerLink="/requests" class="secondary-button">Cancel</a>
+    </div>
+  </form>
+</section>

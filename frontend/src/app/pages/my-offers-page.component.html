@@ -1,0 +1,48 @@
+<section class="page">
+  <div class="page-header">
+    <div>
+      <h1 class="page-title">My Offers</h1>
+      <p class="page-subtitle">See the requests you have offered to help with.</p>
+    </div>
+  </div>
+
+  <div *ngIf="loading" class="panel">Loading your offers...</div>
+
+  <div *ngIf="!loading && offers.length === 0" class="panel empty-state">
+    You have not made any offers yet.
+  </div>
+
+  <div class="grid" *ngIf="!loading && offers.length > 0">
+    <article class="panel" *ngFor="let offer of offers">
+      <div class="actions" style="justify-content: space-between;">
+        <div>
+          <strong>{{ offer.helpRequestTitle || 'Help request' }}</strong>
+          <div class="hint">{{ offer.offeredByName || 'You' }}</div>
+        </div>
+        <span [ngClass]="['badge', statusClass(offer.status)]">{{ offer.status }}</span>
+      </div>
+
+      <p>{{ offer.message }}</p>
+
+      <div class="actions">
+        <a [routerLink]="['/requests', offer.helpRequestId]" class="secondary-button">View request</a>
+        <button
+          *ngIf="offer.status === 'PENDING'"
+          type="button"
+          class="secondary-button"
+          (click)="acceptOffer(offer.id)"
+        >
+          Accept
+        </button>
+        <button
+          *ngIf="offer.status === 'PENDING'"
+          type="button"
+          class="secondary-button"
+          (click)="declineOffer(offer.id)"
+        >
+          Decline
+        </button>
+      </div>
+    </article>
+  </div>
+</section>

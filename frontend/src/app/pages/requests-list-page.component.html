@@ -1,0 +1,60 @@
+<section class="page">
+  <div class="page-header">
+    <div>
+      <h1 class="page-title">Help Requests</h1>
+      <p class="page-subtitle">Browse requests and jump into one that matches your ability to help.</p>
+    </div>
+
+    <div class="actions">
+      <a routerLink="/requests/new" class="primary-button">Create request</a>
+    </div>
+  </div>
+
+  <div class="panel">
+    <div class="actions">
+      <div class="field" style="min-width: 240px; flex: 1;">
+        <label for="statusFilter">Status</label>
+        <select id="statusFilter" name="statusFilter" [(ngModel)]="statusFilter">
+          <option value="">All</option>
+          <option *ngFor="let status of statuses" [value]="status">{{ status }}</option>
+        </select>
+      </div>
+      <div class="actions" style="align-items: end;">
+        <button type="button" class="primary-button" (click)="loadRequests()">Apply filter</button>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="error" class="panel empty-state">{{ error }}</div>
+
+  <div class="panel table-wrap" *ngIf="!loading && requests.length > 0">
+    <table>
+      <thead>
+        <tr>
+          <th>Title</th>
+          <th>Category</th>
+          <th>Location</th>
+          <th>Status</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let request of requests">
+          <td>
+            <strong>{{ request.title }}</strong>
+            <div class="hint">{{ request.description }}</div>
+          </td>
+          <td>{{ request.category }}</td>
+          <td>{{ request.location || 'Not set' }}</td>
+          <td><span [ngClass]="['badge', statusClass(request.status)]">{{ request.status }}</span></td>
+          <td><a [routerLink]="['/requests', request.id]" class="text-button">View</a></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div *ngIf="loading" class="panel">Loading requests...</div>
+  <div *ngIf="!loading && requests.length === 0 && !error" class="panel empty-state">
+    No requests match this filter.
+  </div>
+</section>
