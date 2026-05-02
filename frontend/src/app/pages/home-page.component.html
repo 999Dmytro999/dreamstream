@@ -1,0 +1,61 @@
+<section class="page">
+  <div class="page-header">
+    <div>
+      <h1 class="page-title">DreamStream</h1>
+      <p class="page-subtitle">A simple place to ask for help and offer support.</p>
+    </div>
+
+    <div class="actions">
+      <a routerLink="/requests" class="secondary-button">Browse requests</a>
+      <a routerLink="/requests/new" class="primary-button">Create request</a>
+    </div>
+  </div>
+
+  <div class="grid three">
+    <article class="panel">
+      <strong>{{ openCount }}</strong>
+      <div class="hint">Open requests</div>
+    </article>
+    <article class="panel">
+      <strong>{{ completedCount }}</strong>
+      <div class="hint">Completed requests</div>
+    </article>
+    <article class="panel">
+      <strong>{{ requests.length }}</strong>
+      <div class="hint">Loaded requests</div>
+    </article>
+  </div>
+
+  <div class="grid two">
+    <article class="panel">
+      <h2>What you can do</h2>
+      <p class="hint">
+        Share a request, volunteer to help, and keep track of your activity from one
+        straightforward workspace.
+      </p>
+      <div class="actions">
+        <a routerLink="/register" class="secondary-button">Register</a>
+        <a routerLink="/login" class="secondary-button">Login</a>
+      </div>
+    </article>
+
+    <article class="panel">
+      <h2>Recent requests</h2>
+      <div *ngIf="loading" class="hint">Loading requests...</div>
+      <div *ngIf="!loading && recentRequests.length === 0" class="empty-state">
+        No requests yet.
+      </div>
+
+      <div class="grid" *ngIf="recentRequests.length > 0">
+        <div *ngFor="let request of recentRequests" class="request-item">
+          <div class="actions request-row">
+            <strong>{{ request.title }}</strong>
+            <span [ngClass]="['badge', statusClass(request.status)]">{{ request.status }}</span>
+          </div>
+          <div class="hint">{{ request.category }}{{ request.location ? ' · ' + request.location : '' }}</div>
+          <a [routerLink]="['/requests', request.id]" class="text-button">View details</a>
+        </div>
+      </div>
+    </article>
+  </div>
+</section>

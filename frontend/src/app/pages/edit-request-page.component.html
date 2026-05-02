@@ -1,0 +1,44 @@
+<section class="page">
+  <div class="page-header">
+    <div>
+      <h1 class="page-title">Edit Request</h1>
+      <p class="page-subtitle">Update the request while it is still open.</p>
+    </div>
+  </div>
+
+  <div *ngIf="loading" class="panel">Loading request...</div>
+  <div *ngIf="error && !loading" class="panel empty-state">{{ error }}</div>
+
+  <form *ngIf="!loading && !error" class="panel form" (ngSubmit)="submit()">
+    <div class="field">
+      <label for="title">Title</label>
+      <input id="title" name="title" [(ngModel)]="model.title" required />
+    </div>
+
+    <div class="grid two">
+      <div class="field">
+        <label for="category">Category</label>
+        <select id="category" name="category" [(ngModel)]="model.category">
+          <option *ngFor="let category of categories" [value]="category">{{ category }}</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label for="location">Location</label>
+        <input id="location" name="location" [(ngModel)]="model.location" />
+      </div>
+    </div>
+
+    <div class="field">
+      <label for="description">Description</label>
+      <textarea id="description" name="description" [(ngModel)]="model.description" required></textarea>
+    </div>
+
+    <div class="actions">
+      <button type="submit" class="primary-button" [disabled]="saving">
+        {{ saving ? 'Saving...' : 'Save changes' }}
+      </button>
+      <a [routerLink]="['/requests', requestId]" class="secondary-button">Cancel</a>
+    </div>
+  </form>
+</section>

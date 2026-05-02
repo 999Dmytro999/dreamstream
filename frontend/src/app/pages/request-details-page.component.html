@@ -1,0 +1,50 @@
+<section class="page" *ngIf="request; else loadingState">
+  <div class="page-header">
+    <div>
+      <h1 class="page-title">{{ request.title }}</h1>
+      <p class="page-subtitle">
+        <span [ngClass]="['badge', statusClass(request.status)]">{{ request.status }}</span>
+        <span style="margin-left: 0.5rem;">{{ request.category }}</span>
+        <span *ngIf="request.location">· {{ request.location }}</span>
+      </p>
+    </div>
+
+    <div class="actions">
+      <a [routerLink]="['/requests', request.id, 'edit']" class="secondary-button">Edit</a>
+      <button type="button" class="primary-button" (click)="markComplete()">Mark complete</button>
+    </div>
+  </div>
+
+  <div class="grid two">
+    <article class="panel">
+      <h2>Description</h2>
+      <p>{{ request.description }}</p>
+      <p class="hint" *ngIf="request.createdByName">Created by {{ request.createdByName }}</p>
+      <p class="hint" *ngIf="request.helperName">Helper: {{ request.helperName }}</p>
+    </article>
+
+    <article class="panel">
+      <h2>Offer help</h2>
+      <div class="form">
+        <div class="field">
+          <label for="offerMessage">Message</label>
+          <textarea id="offerMessage" name="offerMessage" [(ngModel)]="offerMessage"></textarea>
+        </div>
+
+        <div class="actions">
+          <button type="button" class="primary-button" (click)="submitOffer()">Send offer</button>
+          <a routerLink="/requests" class="secondary-button">Back to list</a>
+        </div>
+      </div>
+    </article>
+  </div>
+
+  <p *ngIf="actionMessage" class="panel">{{ actionMessage }}</p>
+</section>
+
+<ng-template #loadingState>
+  <section class="page">
+    <div class="panel" *ngIf="loading">Loading request...</div>
+    <div class="panel empty-state" *ngIf="error">{{ error }}</div>
+  </section>
+</ng-template>
