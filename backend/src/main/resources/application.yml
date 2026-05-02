@@ -3,8 +3,8 @@ spring:
     name: dreamstream-backend
   datasource:
     url: ${DB_URL:jdbc:postgresql://localhost:5432/dreamstream}
-    username: ${DB_USERNAME:dreamstream}
-    password: ${DB_PASSWORD:dreamstream}
+    username: ${DB_USER}
+    password: ${DB_PASSWORD}
     driver-class-name: org.postgresql.Driver
   jpa:
     hibernate:

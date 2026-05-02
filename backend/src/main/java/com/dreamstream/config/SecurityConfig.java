@@ -14,6 +14,8 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @Configuration
 public class SecurityConfig {
 
+    static final String REQUEST_OFFER_PATH_PATTERN = "/api/requests/*/offers";
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http, JwtAuthenticationFilter jwtAuthenticationFilter)
             throws Exception {
@@ -26,7 +28,8 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/auth/register", "/api/auth/login", "/actuator/health", "/api/health").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/requests/**").authenticated()
-                        .requestMatchers(HttpMethod.POST, "/api/requests/**/offers").authenticated()
+                        // UUID request ids are a single path segment, so use * instead of ** here.
+                        .requestMatchers(HttpMethod.POST, REQUEST_OFFER_PATH_PATTERN).authenticated()
                         .requestMatchers(HttpMethod.PUT, "/api/requests/**").authenticated()
                         .requestMatchers(HttpMethod.DELETE, "/api/requests/**").authenticated()
                         .requestMatchers(HttpMethod.GET, "/api/my-offers").authenticated()
