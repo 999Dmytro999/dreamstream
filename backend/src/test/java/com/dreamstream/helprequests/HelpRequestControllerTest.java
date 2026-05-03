@@ -55,9 +55,30 @@ class HelpRequestControllerTest {
                 Instant.now()
         );
 
-        when(service.getAll()).thenReturn(List.of(response));
+        when(service.getAll(null)).thenReturn(List.of(response));
 
         mockMvc.perform(get("/api/requests"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].title").value("Need transport"));
+    }
+
+    @Test
+    void getAllShouldPassStatusFilter() throws Exception {
+        HelpRequestResponse response = new HelpRequestResponse(
+                UUID.randomUUID(),
+                "Need transport",
+                "Need a ride to clinic",
+                HelpRequestCategory.TRANSPORTATION,
+                "Denver",
+                HelpRequestStatus.OPEN,
+                new HelpRequestCreatedByResponse(UUID.randomUUID(), "Jane", "Doe"),
+                Instant.now(),
+                Instant.now()
+        );
+
+        when(service.getAll(HelpRequestStatus.OPEN)).thenReturn(List.of(response));
+
+        mockMvc.perform(get("/api/requests").param("status", "OPEN"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$[0].title").value("Need transport"));
     }

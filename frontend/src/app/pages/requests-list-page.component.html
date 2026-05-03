@@ -14,7 +14,12 @@
     <div class="actions">
       <div class="field" style="min-width: 240px; flex: 1;">
         <label for="statusFilter">Status</label>
-        <select id="statusFilter" name="statusFilter" [(ngModel)]="statusFilter">
+        <select
+          id="statusFilter"
+          name="statusFilter"
+          [(ngModel)]="statusFilter"
+          (ngModelChange)="onStatusFilterChange()"
+        >
           <option value="">All</option>
           <option *ngFor="let status of statuses" [value]="status">{{ status }}</option>
         </select>

@@ -28,8 +28,11 @@ public class HelpRequestService {
     }
 
     @Transactional(readOnly = true)
-    public List<HelpRequestResponse> getAll() {
-        return repository.findAll().stream().map(mapper::toResponse).toList();
+    public List<HelpRequestResponse> getAll(HelpRequestStatus status) {
+        List<HelpRequestEntity> requests = status == null
+                ? repository.findAllByOrderByCreatedAtDesc()
+                : repository.findAllByStatusOrderByCreatedAtDesc(status);
+        return requests.stream().map(mapper::toResponse).toList();
     }
 
     @Transactional

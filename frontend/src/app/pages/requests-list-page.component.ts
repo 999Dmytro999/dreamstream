@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, OnInit, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
+import { finalize } from 'rxjs';
 
 import { HELP_REQUEST_STATUSES } from '../core/models/request-options';
 import { HelpRequestStatus, HelpRequestSummary } from '../core/models/help-request.models';
@@ -30,20 +31,27 @@ export class RequestsListPageComponent implements OnInit {
     this.loading = true;
     this.error = '';
 
-    this.requestService.listRequests(this.statusFilter || undefined).subscribe({
+    this.requestService
+      .listRequests(this.statusFilter || undefined)
+      .pipe(finalize(() => {
+        this.loading = false;
+      }))
+      .subscribe({
       next: (requests) => {
         this.requests = requests;
-        this.loading = false;
       },
       error: () => {
         this.requests = [];
-        this.loading = false;
         this.error = 'Unable to load requests right now.';
       }
     });
   }
 
+  onStatusFilterChange(): void {
+    this.loadRequests();
+  }
+
   statusClass(status: string): string {
-    return status.toLowerCase();
+    return (status || 'unknown').toLowerCase();
   }
 }

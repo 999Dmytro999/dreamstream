@@ -95,6 +95,6 @@ export class RequestDetailsPageComponent implements OnInit {
   }
 
   statusClass(status: string): string {
-    return status.toLowerCase();
+    return (status || 'unknown').toLowerCase();
   }
 }
