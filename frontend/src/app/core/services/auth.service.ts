@@ -23,7 +23,7 @@ export class AuthService {
       return of(null);
     }
 
-    return this.http.get<CurrentUser>(`${environment.apiBaseUrl}/auth/me`).pipe(
+    return this.http.get<CurrentUser>(`${environment.apiBaseUrl}/me`).pipe(
       tap((user) => this.currentUserSubject.next(user)),
       catchError(() => {
         this.clearSession();
