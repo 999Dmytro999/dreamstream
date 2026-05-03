@@ -36,7 +36,7 @@ export class CreateRequestPageComponent {
     this.requestService.createRequest(this.model).subscribe({
       next: (request) => {
         this.loading = false;
-        this.router.navigate(['/requests', request.id]);
+        this.router.navigate(['/requests', request.id], { state: { request } });
       },
       error: (error: HttpErrorResponse) => {
         this.loading = false;

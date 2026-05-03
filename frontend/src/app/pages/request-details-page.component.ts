@@ -24,6 +24,15 @@ export class RequestDetailsPageComponent implements OnInit {
   actionMessage = '';
 
   ngOnInit(): void {
+    const stateRequest = history.state.request as HelpRequestDetails | undefined;
+    const routeId = this.route.snapshot.paramMap.get('id');
+
+    if (stateRequest && routeId && stateRequest.id === routeId) {
+      this.request = stateRequest;
+      this.loading = false;
+      return;
+    }
+
     this.loadRequest();
   }
 
