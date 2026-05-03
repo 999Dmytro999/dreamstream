@@ -21,21 +21,31 @@ export class RequestsListPageComponent implements OnInit {
   statusFilter: HelpRequestStatus | '' = '';
   loading = true;
   error = '';
+  private requestSequence = 0;
 
   ngOnInit(): void {
     this.loadRequests();
   }
 
-  loadRequests(): void {
+  loadRequests(status: HelpRequestStatus | '' = this.statusFilter): void {
+    const currentSequence = ++this.requestSequence;
     this.loading = true;
     this.error = '';
 
-    this.requestService.listRequests(this.statusFilter || undefined).subscribe({
+    this.requestService.listRequests(status || undefined).subscribe({
       next: (requests) => {
+        if (currentSequence !== this.requestSequence) {
+          return;
+        }
+
         this.requests = requests;
         this.loading = false;
       },
       error: () => {
+        if (currentSequence !== this.requestSequence) {
+          return;
+        }
+
         this.requests = [];
         this.loading = false;
         this.error = 'Unable to load requests right now.';
@@ -43,7 +53,12 @@ export class RequestsListPageComponent implements OnInit {
     });
   }
 
+  onStatusFilterChange(status: HelpRequestStatus | ''): void {
+    this.statusFilter = status;
+    this.loadRequests(status);
+  }
+
   statusClass(status: string): string {
-    return status.toLowerCase();
+    return (status || 'unknown').toLowerCase();
   }
 }

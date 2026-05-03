@@ -30,7 +30,7 @@ export class MyOffersPageComponent implements OnInit {
   }
 
   statusClass(status: string): string {
-    return status.toLowerCase();
+    return (status || 'unknown').toLowerCase();
   }
 
   acceptOffer(offerId: string): void {
