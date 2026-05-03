@@ -7,13 +7,14 @@
 
     <nav class="nav">
       <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Home</a>
-      <a routerLink="/requests" routerLinkActive="active">Requests</a>
-      <a routerLink="/requests/new" routerLinkActive="active">Create</a>
+      <a routerLink="/requests" routerLinkActive="active">Offer Help</a>
+      <a routerLink="/requests/new" routerLinkActive="active">Request Help</a>
       <a routerLink="/my-requests" routerLinkActive="active">My Requests</a>
-      <a routerLink="/my-offers" routerLinkActive="active">My Offers</a>
       <a routerLink="/profile" routerLinkActive="active">Profile</a>
-      <a routerLink="/login" routerLinkActive="active">Login</a>
-      <a routerLink="/register" routerLinkActive="active">Register</a>
+      <ng-container *ngIf="!(currentUser$ | async)">
+        <a routerLink="/login" routerLinkActive="active">Login</a>
+        <a routerLink="/register" routerLinkActive="active">Register</a>
+      </ng-container>
     </nav>
 
     <div class="user-panel">
