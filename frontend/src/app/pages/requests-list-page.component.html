@@ -15,17 +15,15 @@
       <div class="field" style="min-width: 240px; flex: 1;">
         <label for="statusFilter">Status</label>
         <select
+          #statusSelect
           id="statusFilter"
           name="statusFilter"
           [(ngModel)]="statusFilter"
-          (ngModelChange)="onStatusFilterChange($event)"
+          (change)="onStatusFilterChange($any(statusSelect.value))"
         >
           <option value="">All</option>
           <option *ngFor="let status of statuses" [value]="status">{{ status }}</option>
         </select>
-      </div>
-      <div class="actions" style="align-items: end;">
-        <button type="button" class="primary-button" (click)="loadRequests()">Apply filter</button>
       </div>
     </div>
   </div>

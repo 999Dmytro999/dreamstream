@@ -27,6 +27,7 @@ public class SecurityConfig {
                 )
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/auth/register", "/api/auth/login", "/actuator/health", "/api/health").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/my-requests").authenticated()
                         .requestMatchers(HttpMethod.POST, "/api/requests/**").authenticated()
                         // UUID request ids are a single path segment, so use * instead of ** here.
                         .requestMatchers(HttpMethod.POST, REQUEST_OFFER_PATH_PATTERN).authenticated()

@@ -35,6 +35,14 @@ public class HelpRequestService {
         return requests.stream().map(mapper::toResponse).toList();
     }
 
+    @Transactional(readOnly = true)
+    public List<HelpRequestResponse> getMyRequests(UUID currentUserId) {
+        return repository.findAllByCreatedBy_IdOrderByCreatedAtDesc(currentUserId)
+                .stream()
+                .map(mapper::toResponse)
+                .toList();
+    }
+
     @Transactional
     public HelpRequestResponse create(CreateHelpRequestRequest request, UUID currentUserId) {
         UserEntity user = getUserById(currentUserId);

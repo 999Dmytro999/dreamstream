@@ -36,6 +36,12 @@ public class HelpRequestController {
         return helpRequestService.getAll(status);
     }
 
+    @GetMapping("/my-requests")
+    public List<HelpRequestResponse> getMyRequests() {
+        CurrentUser currentUser = SecurityUtils.requireCurrentUser();
+        return helpRequestService.getMyRequests(currentUser.id());
+    }
+
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public HelpRequestResponse create(@Valid @RequestBody CreateHelpRequestRequest request) {

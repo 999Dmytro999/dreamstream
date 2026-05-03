@@ -9,4 +9,6 @@ public interface HelpRequestRepository extends JpaRepository<HelpRequestEntity, 
     List<HelpRequestEntity> findAllByOrderByCreatedAtDesc();
 
     List<HelpRequestEntity> findAllByStatusOrderByCreatedAtDesc(HelpRequestStatus status);
+
+    List<HelpRequestEntity> findAllByCreatedBy_IdOrderByCreatedAtDesc(UUID createdById);
 }

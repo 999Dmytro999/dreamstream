@@ -15,8 +15,11 @@ export class MyRequestsPageComponent implements OnInit {
 
   requests: HelpRequestSummary[] = [];
   loading = true;
+  error = '';
 
   ngOnInit(): void {
+    this.loading = true;
+    this.error = '';
     this.requestService.listMyRequests().subscribe({
       next: (requests) => {
         this.requests = requests;
@@ -25,6 +28,20 @@ export class MyRequestsPageComponent implements OnInit {
       error: () => {
         this.requests = [];
         this.loading = false;
+        this.error = 'Unable to load your requests right now.';
+      }
+    });
+  }
+
+  deleteRequest(requestId: string): void {
+    if (typeof window !== 'undefined' && !window.confirm('Delete this request? This cannot be undone.')) {
+      return;
+    }
+
+    this.requestService.deleteRequest(requestId).subscribe({
+      next: () => this.ngOnInit(),
+      error: () => {
+        this.error = 'Unable to delete this request right now.';
       }
     });
   }

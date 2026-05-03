@@ -12,7 +12,9 @@
 
   <div *ngIf="loading" class="panel">Loading your requests...</div>
 
-  <div *ngIf="!loading && requests.length === 0" class="panel empty-state">
+  <div *ngIf="error" class="panel empty-state">{{ error }}</div>
+
+  <div *ngIf="!loading && requests.length === 0 && !error" class="panel empty-state">
     You have not created any requests yet.
   </div>
 
@@ -34,6 +36,7 @@
           <td class="actions">
             <a [routerLink]="['/requests', request.id]" class="text-button">View</a>
             <a [routerLink]="['/requests', request.id, 'edit']" class="text-button">Edit</a>
+            <button type="button" class="text-button" (click)="deleteRequest(request.id)">Delete</button>
           </td>
         </tr>
       </tbody>
