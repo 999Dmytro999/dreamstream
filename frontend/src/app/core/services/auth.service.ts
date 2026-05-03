@@ -58,6 +58,10 @@ export class AuthService {
     this.currentUserSubject.next(user);
   }
 
+  hasAuthenticatedSession(): boolean {
+    return this.currentUserSubject.value !== null || this.getAccessToken() !== null;
+  }
+
   getAccessToken(): string | null {
     if (typeof window === 'undefined') {
       return null;
