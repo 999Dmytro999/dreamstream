@@ -32,7 +32,7 @@
 
   <div *ngIf="error" class="panel empty-state">{{ error }}</div>
 
-  <div class="panel table-wrap" *ngIf="!loading && requests.length > 0">
+  <div class="panel table-wrap" *ngIf="requests.length > 0">
     <table>
       <thead>
         <tr>
@@ -57,8 +57,6 @@
       </tbody>
     </table>
   </div>
-
-  <div *ngIf="loading" class="panel">Loading requests...</div>
   <div *ngIf="!loading && requests.length === 0 && !error" class="panel empty-state">
     No requests match this filter.
   </div>
