@@ -18,7 +18,7 @@
           id="statusFilter"
           name="statusFilter"
           [(ngModel)]="statusFilter"
-          (ngModelChange)="onStatusFilterChange()"
+          (ngModelChange)="onStatusFilterChange($event)"
         >
           <option value="">All</option>
           <option *ngFor="let status of statuses" [value]="status">{{ status }}</option>
