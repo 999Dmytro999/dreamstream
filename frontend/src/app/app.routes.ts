@@ -11,6 +11,7 @@ import { EditRequestPageComponent } from './pages/edit-request-page.component';
 import { ProfilePageComponent } from './pages/profile-page.component';
 import { MyRequestsPageComponent } from './pages/my-requests-page.component';
 import { MyOffersPageComponent } from './pages/my-offers-page.component';
+import { authGuard } from './core/guards/auth.guard';
 
 export const routes: Routes = [
   {
@@ -21,12 +22,12 @@ export const routes: Routes = [
       { path: 'login', component: LoginPageComponent },
       { path: 'register', component: RegisterPageComponent },
       { path: 'requests', component: RequestsListPageComponent },
-      { path: 'requests/new', component: CreateRequestPageComponent },
+      { path: 'requests/new', component: CreateRequestPageComponent, canActivate: [authGuard] },
       { path: 'requests/:id', component: RequestDetailsPageComponent },
-      { path: 'requests/:id/edit', component: EditRequestPageComponent },
-      { path: 'profile', component: ProfilePageComponent },
-      { path: 'my-requests', component: MyRequestsPageComponent },
-      { path: 'my-offers', component: MyOffersPageComponent }
+      { path: 'requests/:id/edit', component: EditRequestPageComponent, canActivate: [authGuard] },
+      { path: 'profile', component: ProfilePageComponent, canActivate: [authGuard] },
+      { path: 'my-requests', component: MyRequestsPageComponent, canActivate: [authGuard] },
+      { path: 'my-offers', component: MyOffersPageComponent, canActivate: [authGuard] }
     ]
   },
   { path: '**', redirectTo: '' }

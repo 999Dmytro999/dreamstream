@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
+import { HttpErrorResponse } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 
@@ -37,9 +38,12 @@ export class CreateRequestPageComponent {
         this.loading = false;
         this.router.navigate(['/requests', request.id]);
       },
-      error: () => {
+      error: (error: HttpErrorResponse) => {
         this.loading = false;
-        this.error = 'Unable to create the request right now.';
+        this.error =
+          error.status === 401
+            ? 'Please log in before creating a request.'
+            : 'Unable to create the request right now.';
       }
     });
   }
