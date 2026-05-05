@@ -9,7 +9,7 @@ import { LoginRequest } from '../core/models/auth.models';
 @Component({
   selector: 'app-login-page',
   imports: [CommonModule, FormsModule, RouterLink],
-  templateUrl: './login-page.component.html'
+  templateUrl: './login-page.component.html',
 })
 export class LoginPageComponent {
   private readonly authService = inject(AuthService);
@@ -17,7 +17,7 @@ export class LoginPageComponent {
 
   model: LoginRequest = {
     email: '',
-    password: ''
+    password: '',
   };
 
   loading = false;
@@ -35,7 +35,7 @@ export class LoginPageComponent {
       error: () => {
         this.loading = false;
         this.error = 'Login failed. Please check your credentials and try again.';
-      }
+      },
     });
   }
 }

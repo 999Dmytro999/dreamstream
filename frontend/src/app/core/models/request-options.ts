@@ -4,7 +4,7 @@ export const HELP_REQUEST_STATUSES: readonly HelpRequestStatus[] = [
   'OPEN',
   'IN_PROGRESS',
   'COMPLETED',
-  'CANCELLED'
+  'CANCELLED',
 ];
 
 export const HELP_REQUEST_CATEGORIES: readonly HelpRequestCategory[] = [
@@ -15,5 +15,5 @@ export const HELP_REQUEST_CATEGORIES: readonly HelpRequestCategory[] = [
   'TRANSPORTATION',
   'JOB_SEARCH',
   'DOCUMENTS',
-  'OTHER'
+  'OTHER',
 ];

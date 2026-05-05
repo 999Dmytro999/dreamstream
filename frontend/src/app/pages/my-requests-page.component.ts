@@ -8,7 +8,7 @@ import { RequestService } from '../core/services/request.service';
 @Component({
   selector: 'app-my-requests-page',
   imports: [CommonModule, RouterLink],
-  templateUrl: './my-requests-page.component.html'
+  templateUrl: './my-requests-page.component.html',
 })
 export class MyRequestsPageComponent implements OnInit {
   private readonly requestService = inject(RequestService);
@@ -25,7 +25,7 @@ export class MyRequestsPageComponent implements OnInit {
       error: () => {
         this.requests = [];
         this.loading = false;
-      }
+      },
     });
   }
 

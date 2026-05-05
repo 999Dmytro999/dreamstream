@@ -30,8 +30,8 @@
     <article class="panel">
       <h2>What you can do</h2>
       <p class="hint">
-        Share a request, volunteer to help, and keep track of your activity from one
-        straightforward workspace.
+        Share a request, volunteer to help, and keep track of your activity from one straightforward
+        workspace.
       </p>
       <div class="actions">
         <a routerLink="/register" class="secondary-button">Register</a>
@@ -52,7 +52,9 @@
             <strong>{{ request.title }}</strong>
             <span [ngClass]="['badge', statusClass(request.status)]">{{ request.status }}</span>
           </div>
-          <div class="hint">{{ request.category }}{{ request.location ? ' · ' + request.location : '' }}</div>
+          <div class="hint">
+            {{ request.category }}{{ request.location ? ' · ' + request.location : '' }}
+          </div>
           <a [routerLink]="['/requests', request.id]" class="text-button">View details</a>
         </div>
       </div>

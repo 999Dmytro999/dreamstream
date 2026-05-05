@@ -29,7 +29,9 @@
       <tbody>
         <tr *ngFor="let request of requests">
           <td>{{ request.title }}</td>
-          <td><span [ngClass]="['badge', statusClass(request.status)]">{{ request.status }}</span></td>
+          <td>
+            <span [ngClass]="['badge', statusClass(request.status)]">{{ request.status }}</span>
+          </td>
           <td>{{ request.updatedAt || request.createdAt || '—' }}</td>
           <td class="actions">
             <a [routerLink]="['/requests', request.id]" class="text-button">View</a>

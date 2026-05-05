@@ -10,9 +10,16 @@ on:
     paths:
       - 'frontend/**'
 
+concurrency:
+  group: frontend-ci-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   frontend:
+    name: frontend
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -40,10 +47,15 @@ jobs:
         working-directory: frontend
         run: npm ci
 
+      - name: Lint frontend
+        if: steps.frontend_check.outputs.exists == 'true'
+        working-directory: frontend
+        run: npm run lint
+
       - name: Test frontend
         if: steps.frontend_check.outputs.exists == 'true'
         working-directory: frontend
-        run: npm test
+        run: npm test -- --watch=false
 
       - name: Build frontend
         if: steps.frontend_check.outputs.exists == 'true'

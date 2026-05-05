@@ -73,6 +73,13 @@ Recommended backend modules:
 - Prefer UUID IDs.
 - Use createdAt and updatedAt fields for main entities.
 
+## Repo Guidance
+
+- Keep project-level guidance in `AGENTS.md` and architecture decisions in `docs/adr/`.
+- Use `scripts/docs.mjs` to validate the required documentation and governance files.
+- Keep `.github/CODEOWNERS`, `.github/dependabot.yml`, and `.github/pull_request_template.md` aligned with the current workflow layout.
+- When changing backend architecture or cross-cutting behavior, update the relevant ADR instead of relying only on PR text.
+
 ## Migration Goal
 
 Rebuild HelpEachOther as DreamStream using Spring Boot and Angular.

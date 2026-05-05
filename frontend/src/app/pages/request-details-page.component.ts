@@ -10,7 +10,7 @@ import { HelpRequestDetails } from '../core/models/help-request.models';
 @Component({
   selector: 'app-request-details-page',
   imports: [CommonModule, FormsModule, RouterLink],
-  templateUrl: './request-details-page.component.html'
+  templateUrl: './request-details-page.component.html',
 })
 export class RequestDetailsPageComponent implements OnInit {
   private readonly route = inject(ActivatedRoute);
@@ -48,7 +48,7 @@ export class RequestDetailsPageComponent implements OnInit {
         this.request = null;
         this.loading = false;
         this.error = 'Unable to load this request.';
-      }
+      },
     });
   }
 
@@ -67,7 +67,7 @@ export class RequestDetailsPageComponent implements OnInit {
       },
       error: () => {
         this.actionMessage = 'Unable to send your offer right now.';
-      }
+      },
     });
   }
 
@@ -81,7 +81,7 @@ export class RequestDetailsPageComponent implements OnInit {
       next: () => this.loadRequest(),
       error: () => {
         this.actionMessage = 'Unable to complete this request right now.';
-      }
+      },
     });
   }
 

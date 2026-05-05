@@ -10,7 +10,7 @@ import { RequestService } from '../core/services/request.service';
 @Component({
   selector: 'app-create-request-page',
   imports: [CommonModule, FormsModule, RouterLink],
-  templateUrl: './create-request-page.component.html'
+  templateUrl: './create-request-page.component.html',
 })
 export class CreateRequestPageComponent {
   private readonly requestService = inject(RequestService);
@@ -22,7 +22,7 @@ export class CreateRequestPageComponent {
     title: '',
     description: '',
     category: 'OTHER',
-    location: ''
+    location: '',
   };
 
   loading = false;
@@ -40,7 +40,7 @@ export class CreateRequestPageComponent {
       error: () => {
         this.loading = false;
         this.error = 'Unable to create the request right now.';
-      }
+      },
     });
   }
 }

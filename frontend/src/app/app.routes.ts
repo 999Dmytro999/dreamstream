@@ -26,8 +26,8 @@ export const routes: Routes = [
       { path: 'requests/:id/edit', component: EditRequestPageComponent },
       { path: 'profile', component: ProfilePageComponent },
       { path: 'my-requests', component: MyRequestsPageComponent },
-      { path: 'my-offers', component: MyOffersPageComponent }
-    ]
+      { path: 'my-offers', component: MyOffersPageComponent },
+    ],
   },
-  { path: '**', redirectTo: '' }
+  { path: '**', redirectTo: '' },
 ];

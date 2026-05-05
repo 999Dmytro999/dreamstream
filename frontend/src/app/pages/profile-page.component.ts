@@ -10,7 +10,7 @@ import { CurrentUser } from '../core/models/auth.models';
 @Component({
   selector: 'app-profile-page',
   imports: [CommonModule, RouterLink],
-  templateUrl: './profile-page.component.html'
+  templateUrl: './profile-page.component.html',
 })
 export class ProfilePageComponent implements OnInit {
   private readonly authService = inject(AuthService);
@@ -26,7 +26,7 @@ export class ProfilePageComponent implements OnInit {
     this.authService.loadCurrentUser().subscribe({
       next: (user) => {
         this.user = user;
-      }
+      },
     });
 
     this.requestService.listMyRequests().subscribe({
@@ -36,7 +36,7 @@ export class ProfilePageComponent implements OnInit {
       },
       error: () => {
         this.loading = false;
-      }
+      },
     });
 
     this.offerService.listMyOffers().subscribe({
@@ -45,7 +45,7 @@ export class ProfilePageComponent implements OnInit {
       },
       error: () => {
         this.myOffersCount = 0;
-      }
+      },
     });
   }
 }

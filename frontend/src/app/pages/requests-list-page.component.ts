@@ -10,7 +10,7 @@ import { RequestService } from '../core/services/request.service';
 @Component({
   selector: 'app-requests-list-page',
   imports: [CommonModule, FormsModule, RouterLink],
-  templateUrl: './requests-list-page.component.html'
+  templateUrl: './requests-list-page.component.html',
 })
 export class RequestsListPageComponent implements OnInit {
   private readonly requestService = inject(RequestService);
@@ -39,7 +39,7 @@ export class RequestsListPageComponent implements OnInit {
         this.requests = [];
         this.loading = false;
         this.error = 'Unable to load requests right now.';
-      }
+      },
     });
   }
 

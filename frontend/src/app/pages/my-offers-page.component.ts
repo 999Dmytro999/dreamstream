@@ -8,7 +8,7 @@ import { OfferService } from '../core/services/offer.service';
 @Component({
   selector: 'app-my-offers-page',
   imports: [CommonModule, RouterLink],
-  templateUrl: './my-offers-page.component.html'
+  templateUrl: './my-offers-page.component.html',
 })
 export class MyOffersPageComponent implements OnInit {
   private readonly offerService = inject(OfferService);
@@ -25,7 +25,7 @@ export class MyOffersPageComponent implements OnInit {
       error: () => {
         this.offers = [];
         this.loading = false;
-      }
+      },
     });
   }
 
@@ -35,13 +35,13 @@ export class MyOffersPageComponent implements OnInit {
 
   acceptOffer(offerId: string): void {
     this.offerService.acceptOffer(offerId).subscribe({
-      next: () => this.ngOnInit()
+      next: () => this.ngOnInit(),
     });
   }
 
   declineOffer(offerId: string): void {
     this.offerService.declineOffer(offerId).subscribe({
-      next: () => this.ngOnInit()
+      next: () => this.ngOnInit(),
     });
   }
 }
