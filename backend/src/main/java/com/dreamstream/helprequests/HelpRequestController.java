@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -31,8 +32,14 @@ public class HelpRequestController {
     }
 
     @GetMapping
-    public List<HelpRequestResponse> getAll() {
-        return helpRequestService.getAll();
+    public List<HelpRequestResponse> getAll(@RequestParam(required = false) HelpRequestStatus status) {
+        return helpRequestService.getAll(status);
+    }
+
+    @GetMapping("/my-requests")
+    public List<HelpRequestResponse> getMyRequests() {
+        CurrentUser currentUser = SecurityUtils.requireCurrentUser();
+        return helpRequestService.getMyRequests(currentUser.id());
     }
 
     @PostMapping
