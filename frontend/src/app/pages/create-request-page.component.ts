@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
+import { HttpErrorResponse } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 
@@ -10,7 +11,7 @@ import { RequestService } from '../core/services/request.service';
 @Component({
   selector: 'app-create-request-page',
   imports: [CommonModule, FormsModule, RouterLink],
-  templateUrl: './create-request-page.component.html',
+  templateUrl: './create-request-page.component.html'
 })
 export class CreateRequestPageComponent {
   private readonly requestService = inject(RequestService);
@@ -22,7 +23,7 @@ export class CreateRequestPageComponent {
     title: '',
     description: '',
     category: 'OTHER',
-    location: '',
+    location: ''
   };
 
   loading = false;
@@ -35,12 +36,15 @@ export class CreateRequestPageComponent {
     this.requestService.createRequest(this.model).subscribe({
       next: (request) => {
         this.loading = false;
-        this.router.navigate(['/requests', request.id]);
+        this.router.navigate(['/requests', request.id], { state: { request } });
       },
-      error: () => {
+      error: (error: HttpErrorResponse) => {
         this.loading = false;
-        this.error = 'Unable to create the request right now.';
-      },
+        this.error =
+          error.status === 401
+            ? 'Please log in before creating a request.'
+            : 'Unable to create the request right now.';
+      }
     });
   }
 }
