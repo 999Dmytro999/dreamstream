@@ -10,7 +10,7 @@ import { RequestService } from '../core/services/request.service';
 @Component({
   selector: 'app-edit-request-page',
   imports: [CommonModule, FormsModule, RouterLink],
-  templateUrl: './edit-request-page.component.html'
+  templateUrl: './edit-request-page.component.html',
 })
 export class EditRequestPageComponent implements OnInit {
   private readonly route = inject(ActivatedRoute);
@@ -24,7 +24,7 @@ export class EditRequestPageComponent implements OnInit {
     title: '',
     description: '',
     category: 'OTHER',
-    location: ''
+    location: '',
   };
 
   loading = true;
@@ -48,7 +48,7 @@ export class EditRequestPageComponent implements OnInit {
       error: () => {
         this.loading = false;
         this.error = 'Unable to load the request.';
-      }
+      },
     });
   }
 
@@ -64,7 +64,7 @@ export class EditRequestPageComponent implements OnInit {
       error: () => {
         this.saving = false;
         this.error = 'Unable to save the request right now.';
-      }
+      },
     });
   }
 
@@ -73,7 +73,7 @@ export class EditRequestPageComponent implements OnInit {
       title: request.title,
       description: request.description ?? '',
       category: request.category,
-      location: request.location ?? ''
+      location: request.location ?? '',
     };
   }
 }

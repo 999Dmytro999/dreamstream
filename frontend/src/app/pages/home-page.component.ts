@@ -8,7 +8,7 @@ import { HelpRequestSummary } from '../core/models/help-request.models';
 @Component({
   selector: 'app-home-page',
   imports: [CommonModule, RouterLink],
-  templateUrl: './home-page.component.html'
+  templateUrl: './home-page.component.html',
 })
 export class HomePageComponent implements OnInit {
   private readonly requestService = inject(RequestService);
@@ -25,7 +25,7 @@ export class HomePageComponent implements OnInit {
       error: () => {
         this.requests = [];
         this.loading = false;
-      }
+      },
     });
   }
 

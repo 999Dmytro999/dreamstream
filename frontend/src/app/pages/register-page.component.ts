@@ -9,7 +9,7 @@ import { RegisterRequest } from '../core/models/auth.models';
 @Component({
   selector: 'app-register-page',
   imports: [CommonModule, FormsModule, RouterLink],
-  templateUrl: './register-page.component.html'
+  templateUrl: './register-page.component.html',
 })
 export class RegisterPageComponent {
   private readonly authService = inject(AuthService);
@@ -19,7 +19,7 @@ export class RegisterPageComponent {
     firstName: '',
     lastName: '',
     email: '',
-    password: ''
+    password: '',
   };
 
   loading = false;
@@ -37,7 +37,7 @@ export class RegisterPageComponent {
       error: () => {
         this.loading = false;
         this.error = 'Registration failed. Please review the form and try again.';
-      }
+      },
     });
   }
 }

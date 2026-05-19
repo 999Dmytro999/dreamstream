@@ -8,11 +8,11 @@ import {
   HelpRequestDetails,
   HelpRequestStatus,
   HelpRequestSummary,
-  UpdateHelpRequestRequest
+  UpdateHelpRequestRequest,
 } from '../models/help-request.models';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class RequestService {
   private readonly http = inject(HttpClient);

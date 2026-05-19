@@ -39,3 +39,4 @@ The service runs on `http://localhost:8080` by default.
 - CORS enabled for Angular dev server (`http://localhost:4200`) on `/api/**`
 - Global REST exception handling and standard `ErrorResponse`
 - Health endpoint: `GET /api/health`
+- Coverage reporting and checks via JaCoCo during `mvn verify`

@@ -4,7 +4,7 @@
       <h1 class="page-title">{{ request.title }}</h1>
       <p class="page-subtitle">
         <span [ngClass]="['badge', statusClass(request.status)]">{{ request.status }}</span>
-        <span style="margin-left: 0.5rem;">{{ request.category }}</span>
+        <span style="margin-left: 0.5rem">{{ request.category }}</span>
         <span *ngIf="request.location">· {{ request.location }}</span>
       </p>
     </div>

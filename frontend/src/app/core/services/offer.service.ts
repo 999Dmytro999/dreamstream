@@ -6,7 +6,7 @@ import { environment } from '../../../environments/environment';
 import { HelpOfferSummary, SubmitHelpOfferRequest } from '../models/help-offer.models';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class OfferService {
   private readonly http = inject(HttpClient);
@@ -17,7 +17,10 @@ export class OfferService {
   }
 
   submitOffer(requestId: string, payload: SubmitHelpOfferRequest): Observable<HelpOfferSummary> {
-    return this.http.post<HelpOfferSummary>(`${environment.apiBaseUrl}/requests/${requestId}/offers`, payload);
+    return this.http.post<HelpOfferSummary>(
+      `${environment.apiBaseUrl}/requests/${requestId}/offers`,
+      payload,
+    );
   }
 
   acceptOffer(offerId: string): Observable<HelpOfferSummary> {

@@ -16,9 +16,16 @@ on:
       - 'scripts/**'
       - '.github/workflows/e2e-ci.yml'
 
+concurrency:
+  group: e2e-ci-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   e2e:
+    name: e2e
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
 
     services:
       postgres:

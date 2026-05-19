@@ -38,10 +38,18 @@ This will compile your project and store the build artifacts in the `dist/` dire
 
 ## Running unit tests
 
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
+To execute unit tests with Angular's built-in unit test builder, use the following command:
 
 ```bash
 ng test
+```
+
+## Linting
+
+To run the formatting-based lint check used in CI:
+
+```bash
+npm run lint
 ```
 
 ## Running end-to-end tests
@@ -49,10 +57,10 @@ ng test
 For end-to-end (e2e) testing, run:
 
 ```bash
-ng e2e
+node ../scripts/e2e.mjs
 ```
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+The repository currently uses API-level smoke coverage in `scripts/e2e.mjs`.
 
 ## Additional Resources
 
