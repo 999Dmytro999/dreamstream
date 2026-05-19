@@ -80,6 +80,15 @@ Recommended backend modules:
 - Keep `.github/CODEOWNERS`, `.github/dependabot.yml`, and `.github/pull_request_template.md` aligned with the current workflow layout.
 - When changing backend architecture or cross-cutting behavior, update the relevant ADR instead of relying only on PR text.
 
+## Frontend Design Guidance
+
+- Read `docs/design-system.md` before frontend UI work.
+- Read `docs/frontend-design-handoff.md` before implementing Figma or reference designs.
+- Read `docs/homepage-implementation-plan.md` before changing the homepage.
+- Do not replace dynamic Angular pages with static screenshots.
+- Keep existing API services, routes, guards, and auth behavior.
+- Run the frontend build after frontend changes.
+
 ## Migration Goal
 
 Rebuild HelpEachOther as DreamStream using Spring Boot and Angular.
