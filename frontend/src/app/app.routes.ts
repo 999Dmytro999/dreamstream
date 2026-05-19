@@ -27,8 +27,8 @@ export const routes: Routes = [
       { path: 'requests/:id/edit', component: EditRequestPageComponent, canActivate: [authGuard] },
       { path: 'profile', component: ProfilePageComponent, canActivate: [authGuard] },
       { path: 'my-requests', component: MyRequestsPageComponent, canActivate: [authGuard] },
-      { path: 'my-offers', component: MyOffersPageComponent, canActivate: [authGuard] }
-    ]
+      { path: 'my-offers', component: MyOffersPageComponent, canActivate: [authGuard] },
+    ],
   },
-  { path: '**', redirectTo: '' }
+  { path: '**', redirectTo: '' },
 ];

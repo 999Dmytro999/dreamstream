@@ -2,7 +2,9 @@
   <div class="page-header">
     <div>
       <h1 class="page-title">Offer Help</h1>
-      <p class="page-subtitle">Browse help requests and jump into one that matches your ability to help.</p>
+      <p class="page-subtitle">
+        Browse help requests and jump into one that matches your ability to help.
+      </p>
     </div>
 
     <div class="actions">
@@ -12,7 +14,7 @@
 
   <div class="panel">
     <div class="actions">
-      <div class="field" style="min-width: 240px; flex: 1;">
+      <div class="field" style="min-width: 240px; flex: 1">
         <label for="statusFilter">Status</label>
         <select
           #statusSelect
@@ -49,12 +51,15 @@
           </td>
           <td>{{ request.category }}</td>
           <td>{{ request.location || 'Not set' }}</td>
-          <td><span [ngClass]="['badge', statusClass(request.status)]">{{ request.status }}</span></td>
+          <td>
+            <span [ngClass]="['badge', statusClass(request.status)]">{{ request.status }}</span>
+          </td>
           <td><a [routerLink]="['/requests', request.id]" class="text-button">View</a></td>
         </tr>
       </tbody>
     </table>
   </div>
+  <div *ngIf="loading" class="panel">Loading requests...</div>
   <div *ngIf="!loading && requests.length === 0 && !error" class="panel empty-state">
     No requests match this filter.
   </div>

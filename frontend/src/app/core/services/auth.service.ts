@@ -6,7 +6,7 @@ import { environment } from '../../../environments/environment';
 import { AuthResponse, CurrentUser, LoginRequest, RegisterRequest } from '../models/auth.models';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AuthService {
   private readonly http = inject(HttpClient);
@@ -28,20 +28,20 @@ export class AuthService {
       catchError(() => {
         this.clearSession();
         return of(null);
-      })
+      }),
     );
   }
 
   register(payload: RegisterRequest): Observable<AuthResponse> {
-    return this.http.post<AuthResponse>(`${environment.apiBaseUrl}/auth/register`, payload).pipe(
-      tap((response) => this.storeSession(response))
-    );
+    return this.http
+      .post<AuthResponse>(`${environment.apiBaseUrl}/auth/register`, payload)
+      .pipe(tap((response) => this.storeSession(response)));
   }
 
   login(payload: LoginRequest): Observable<AuthResponse> {
-    return this.http.post<AuthResponse>(`${environment.apiBaseUrl}/auth/login`, payload).pipe(
-      tap((response) => this.storeSession(response))
-    );
+    return this.http
+      .post<AuthResponse>(`${environment.apiBaseUrl}/auth/login`, payload)
+      .pipe(tap((response) => this.storeSession(response)));
   }
 
   logout(): Observable<void> {
@@ -50,7 +50,7 @@ export class AuthService {
       catchError(() => {
         this.clearSession();
         return of(void 0);
-      })
+      }),
     );
   }
 

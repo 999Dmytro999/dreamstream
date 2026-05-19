@@ -8,7 +8,7 @@ import { RequestService } from '../core/services/request.service';
 @Component({
   selector: 'app-my-requests-page',
   imports: [CommonModule, RouterLink],
-  templateUrl: './my-requests-page.component.html'
+  templateUrl: './my-requests-page.component.html',
 })
 export class MyRequestsPageComponent implements OnInit {
   private readonly requestService = inject(RequestService);
@@ -29,12 +29,15 @@ export class MyRequestsPageComponent implements OnInit {
         this.requests = [];
         this.loading = false;
         this.error = 'Unable to load your requests right now.';
-      }
+      },
     });
   }
 
   deleteRequest(requestId: string): void {
-    if (typeof window !== 'undefined' && !window.confirm('Delete this request? This cannot be undone.')) {
+    if (
+      typeof window !== 'undefined' &&
+      !window.confirm('Delete this request? This cannot be undone.')
+    ) {
       return;
     }
 
@@ -42,7 +45,7 @@ export class MyRequestsPageComponent implements OnInit {
       next: () => this.ngOnInit(),
       error: () => {
         this.error = 'Unable to delete this request right now.';
-      }
+      },
     });
   }
 

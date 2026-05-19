@@ -34,11 +34,13 @@
           <td>
             <span [ngClass]="['badge', statusClass(request.status)]">{{ request.status }}</span>
           </td>
-          <td>{{ request.updatedAt || request.createdAt || '—' }}</td>
+          <td>{{ request.updatedAt || request.createdAt || '-' }}</td>
           <td class="actions">
             <a [routerLink]="['/requests', request.id]" class="text-button">View</a>
             <a [routerLink]="['/requests', request.id, 'edit']" class="text-button">Edit</a>
-            <button type="button" class="text-button" (click)="deleteRequest(request.id)">Delete</button>
+            <button type="button" class="text-button" (click)="deleteRequest(request.id)">
+              Delete
+            </button>
           </td>
         </tr>
       </tbody>
