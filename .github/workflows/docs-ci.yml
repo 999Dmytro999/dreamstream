@@ -34,7 +34,7 @@ jobs:
       contents: read
     steps:
       - name: Checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
 
       - name: Verify required documentation and governance files
         run: node scripts/docs.mjs
