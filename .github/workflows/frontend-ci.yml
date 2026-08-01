@@ -36,7 +36,7 @@ jobs:
 
       - name: Set up Node.js 22
         if: steps.frontend_check.outputs.exists == 'true'
-        uses: actions/setup-node@v6
+        uses: actions/setup-node@v7
         with:
           node-version: '22'
           cache: npm
