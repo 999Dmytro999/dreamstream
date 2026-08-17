@@ -15,12 +15,23 @@ export class AppLayoutComponent implements OnInit {
   private readonly router = inject(Router);
 
   readonly currentUser$ = this.authService.currentUser$;
+  logoLoadFailed = false;
+  mobileNavOpen = false;
 
   ngOnInit(): void {
     this.authService.loadCurrentUser().subscribe();
   }
 
+  toggleMobileNav(): void {
+    this.mobileNavOpen = !this.mobileNavOpen;
+  }
+
+  closeMobileNav(): void {
+    this.mobileNavOpen = false;
+  }
+
   logout(): void {
+    this.closeMobileNav();
     this.authService.logout().subscribe({
       next: () => {
         this.router.navigateByUrl('/login');
