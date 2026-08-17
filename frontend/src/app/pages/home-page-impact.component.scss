@@ -1,0 +1,108 @@
+.impact-strip {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 0.25rem;
+  overflow: hidden;
+  height: 8.375rem;
+  min-height: 8.375rem;
+  margin: -1rem calc(50% - 50vw) 0;
+  padding: 2.35rem clamp(1.2rem, 4vw, 3rem) 1.25rem;
+  border: 1px solid rgba(217, 226, 236, 0.58);
+  border-right: 0;
+  border-bottom: 0;
+  border-left: 0;
+  border-radius: 0;
+  background:
+    url('/assets/images/footer-watercolor.png') center bottom / 100% auto no-repeat,
+    radial-gradient(ellipse at 20% 100%, rgba(221, 244, 234, 0.7) 0 9rem, transparent 16rem),
+    radial-gradient(ellipse at 82% 94%, rgba(255, 224, 208, 0.72) 0 8rem, transparent 15rem),
+    linear-gradient(180deg, #fff8ec 0%, #fffdf8 100%);
+  box-shadow: none;
+  color: var(--home-navy-text);
+  text-align: center;
+}
+
+.impact-strip::before,
+.impact-strip::after {
+  display: none;
+}
+
+.impact-strip::before {
+  left: -2.5rem;
+  bottom: -1.2rem;
+  transform: rotate(-7deg);
+}
+
+.impact-strip::after {
+  right: -2.5rem;
+  bottom: -1.4rem;
+  transform: rotate(7deg);
+}
+
+.impact-strip-art {
+  position: relative;
+  display: grid;
+  place-items: center;
+  flex: 0 0 auto;
+  width: 2rem;
+  height: 1.5rem;
+}
+
+.impact-heart {
+  color: var(--home-coral);
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: 1.5rem;
+  line-height: 1;
+}
+
+.impact-leaf {
+  display: none;
+}
+
+.impact-leaf-left {
+  left: -1.05rem;
+  bottom: 0.1rem;
+  transform: rotate(-30deg);
+}
+
+.impact-leaf-right {
+  right: -1.05rem;
+  top: 0.1rem;
+  transform: rotate(35deg);
+}
+
+.impact-strip-copy {
+  position: relative;
+  z-index: 1;
+}
+
+.impact-strip h2 {
+  margin: 0;
+  color: #071a4d;
+  font-size: clamp(1rem, 2vw, 1.25rem);
+  font-weight: 850;
+  line-height: 1.25;
+}
+
+.impact-strip p {
+  margin: 0.45rem 0 0;
+  color: var(--home-muted-text);
+  font-size: 0.95rem;
+  line-height: 1.45;
+}
+
+@media (max-width: 680px) {
+  .impact-strip {
+    height: auto;
+    min-height: 7.5rem;
+    padding-block: 1.75rem 1rem;
+  }
+
+  .impact-strip::before,
+  .impact-strip::after {
+    width: 10rem;
+  }
+}

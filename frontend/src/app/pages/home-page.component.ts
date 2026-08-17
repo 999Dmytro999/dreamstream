@@ -9,6 +9,11 @@ import { HelpRequestSummary } from '../core/models/help-request.models';
   selector: 'app-home-page',
   imports: [CommonModule, RouterLink],
   templateUrl: './home-page.component.html',
+  styleUrls: [
+    './home-page.component.scss',
+    './home-page-panels.component.scss',
+    './home-page-impact.component.scss',
+  ],
 })
 export class HomePageComponent implements OnInit {
   private readonly requestService = inject(RequestService);

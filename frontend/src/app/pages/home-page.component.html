@@ -1,63 +1,179 @@
-<section class="page">
-  <div class="page-header">
-    <div>
-      <h1 class="page-title">DreamStream</h1>
-      <p class="page-subtitle">A simple place to ask for help and offer support.</p>
-    </div>
-
-    <div class="actions">
-      <a routerLink="/requests" class="secondary-button">Offer Help</a>
-      <a routerLink="/requests/new" class="primary-button">Request Help</a>
-    </div>
-  </div>
-
-  <div class="grid three">
-    <article class="panel">
-      <strong>{{ openCount }}</strong>
-      <div class="hint">Open requests</div>
-    </article>
-    <article class="panel">
-      <strong>{{ completedCount }}</strong>
-      <div class="hint">Completed requests</div>
-    </article>
-    <article class="panel">
-      <strong>{{ requests.length }}</strong>
-      <div class="hint">Loaded requests</div>
-    </article>
-  </div>
-
-  <div class="grid two">
-    <article class="panel">
-      <h2>What you can do</h2>
-      <p class="hint">
-        Share a request, volunteer to help, and keep track of your activity from one straightforward
-        workspace.
+<section class="page home-page">
+  <section class="home-hero" aria-labelledby="home-hero-title">
+    <div class="hero-content">
+      <p class="hero-eyebrow">
+        TOGETHER, WE CREATE CHANGE
+        <span aria-hidden="true">&hearts;</span>
       </p>
-      <div class="actions">
-        <a routerLink="/register" class="secondary-button">Register</a>
-        <a routerLink="/login" class="secondary-button">Login</a>
+      <h1 id="home-hero-title" class="hero-title">DreamStream</h1>
+      <p class="hero-subtitle">A simple place to ask for help and offer support.</p>
+      <p class="hero-support">Together, small acts create real change.</p>
+    </div>
+
+    <div class="hero-actions" aria-label="DreamStream quick actions">
+      <a routerLink="/requests" class="cta-card cta-card-offer">
+        <span class="cta-icon" aria-hidden="true">
+          <svg viewBox="0 0 48 48">
+            <path d="M10 30c5 1 9 0 13-4l4-4a4 4 0 0 1 6 5l-6 7c-3 3-7 4-12 3l-5-1" />
+            <path d="M24 17s-7-4-7-9a4 4 0 0 1 7-2 4 4 0 0 1 7 2c0 5-7 9-7 9Z" />
+          </svg>
+        </span>
+        <span class="cta-copy">
+          <strong>Offer Help</strong>
+          <span>Share your skills and support others</span>
+        </span>
+        <span class="cta-arrow" aria-hidden="true">&rarr;</span>
+      </a>
+
+      <a routerLink="/requests/new" class="cta-card cta-card-request">
+        <span class="cta-icon" aria-hidden="true">
+          <svg viewBox="0 0 48 48">
+            <path d="M10 31c6 1 12 0 18-4l7-5a4 4 0 0 1 5 6l-7 7c-4 4-10 5-18 3" />
+            <path d="M24 23V10" />
+            <path d="M24 14c-6-1-10-4-12-9 7 0 11 3 12 9Z" />
+            <path d="M24 17c6-1 10-4 12-9-7 0-11 3-12 9Z" />
+          </svg>
+        </span>
+        <span class="cta-copy">
+          <strong>Request Help</strong>
+          <span>Get help with what you need</span>
+        </span>
+        <span class="cta-arrow" aria-hidden="true">&rarr;</span>
+      </a>
+    </div>
+
+    <div class="hero-illustration" aria-hidden="true">
+      <div class="hero-art">
+        <span class="hero-art-background"></span>
+      </div>
+    </div>
+  </section>
+
+  <div class="stats-grid" aria-label="DreamStream request statistics">
+    <article class="stat-card stat-card-open">
+      <span class="stat-icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24">
+          <path d="M5 12.5c0-3.3 2.9-6 7-6s7 2.7 7 6-2.9 6-7 6c-.8 0-1.6-.1-2.3-.3L5 20l1.1-3.8A6 6 0 0 1 5 12.5Z" />
+        </svg>
+      </span>
+      <span class="stat-copy">
+        <strong>{{ openCount }}</strong>
+        <span class="stat-label">Open requests</span>
+        <span class="stat-helper">Needs support right now</span>
+      </span>
+      <span class="stat-chevron" aria-hidden="true">&rsaquo;</span>
+    </article>
+
+    <article class="stat-card stat-card-completed">
+      <span class="stat-icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24">
+          <path d="M20 12a8 8 0 1 1-16 0 8 8 0 0 1 16 0Z" />
+          <path d="m8.5 12.2 2.1 2.1 4.9-5" />
+        </svg>
+      </span>
+      <span class="stat-copy">
+        <strong>{{ completedCount }}</strong>
+        <span class="stat-label">Completed requests</span>
+        <span class="stat-helper">Successfully resolved</span>
+      </span>
+      <span class="stat-chevron" aria-hidden="true">&rsaquo;</span>
+    </article>
+
+    <article class="stat-card stat-card-loaded">
+      <span class="stat-icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24">
+          <path d="M12 6v7l4 2" />
+          <path d="M20 12a8 8 0 1 1-16 0 8 8 0 0 1 16 0Z" />
+        </svg>
+      </span>
+      <span class="stat-copy">
+        <strong>{{ requests.length }}</strong>
+        <span class="stat-label">Loaded requests</span>
+        <span class="stat-helper">Requests in our community</span>
+      </span>
+      <span class="stat-chevron" aria-hidden="true">&rsaquo;</span>
+    </article>
+  </div>
+
+  <div class="home-content-grid">
+    <article class="home-panel what-card">
+      <div class="section-title-row">
+        <h2>What you can do</h2>
+      </div>
+      <div class="what-card-layout">
+        <div class="what-card-copy">
+          <p>
+            Share a request, volunteer to help, and keep track of your activity from one
+            straightforward workspace.
+          </p>
+          <div class="what-card-actions">
+            <a routerLink="/register" class="home-secondary-link">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8Z" />
+                <path d="M4.5 21a7.5 7.5 0 0 1 15 0" />
+              </svg>
+              <span>Register</span>
+            </a>
+            <a routerLink="/login" class="home-primary-link">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M14 5l7 7-7 7" />
+                <path d="M21 12H8" />
+                <path d="M8 5H4v14h4" />
+              </svg>
+              <span>Login</span>
+            </a>
+          </div>
+        </div>
+        <div class="what-card-art" aria-hidden="true">
+          <span class="what-art-heart">&hearts;</span>
+        </div>
       </div>
     </article>
 
-    <article class="panel">
-      <h2>Recent requests</h2>
-      <div *ngIf="loading" class="hint">Loading requests...</div>
-      <div *ngIf="!loading && recentRequests.length === 0" class="empty-state">
+    <article class="home-panel recent-card">
+      <div class="section-title-row">
+        <h2>Recent requests</h2>
+        <a routerLink="/requests" class="view-all-link">View all &rsaquo;</a>
+      </div>
+
+      <div *ngIf="loading" class="panel-state">Loading requests...</div>
+      <div *ngIf="!loading && recentRequests.length === 0" class="panel-state empty-state">
         No requests yet.
       </div>
 
-      <div class="grid" *ngIf="recentRequests.length > 0">
-        <div *ngFor="let request of recentRequests" class="request-item">
-          <div class="actions request-row">
-            <strong>{{ request.title }}</strong>
-            <span [ngClass]="['badge', statusClass(request.status)]">{{ request.status }}</span>
+      <div class="recent-list" *ngIf="recentRequests.length > 0">
+        <div *ngFor="let request of recentRequests" class="request-item request-row">
+          <span class="request-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24">
+              <path d="M4 6h16v11H4z" />
+              <path d="M8 20h8" />
+              <path d="M12 17v3" />
+            </svg>
+          </span>
+          <div class="request-copy">
+            <div class="request-title-row">
+              <strong>{{ request.title }}</strong>
+              <span [ngClass]="['badge', statusClass(request.status)]">{{ request.status }}</span>
+            </div>
+            <div class="request-meta">
+              {{ request.category }}{{ request.location ? ' · ' + request.location : '' }}
+            </div>
+            <a [routerLink]="['/requests', request.id]" class="request-detail-link">View details</a>
           </div>
-          <div class="hint">
-            {{ request.category }}{{ request.location ? ' · ' + request.location : '' }}
-          </div>
-          <a [routerLink]="['/requests', request.id]" class="text-button">View details</a>
         </div>
       </div>
     </article>
   </div>
+
+  <section class="impact-strip" aria-labelledby="impact-strip-title">
+    <div class="impact-strip-art" aria-hidden="true">
+      <span class="impact-heart">&hearts;</span>
+      <span class="impact-leaf impact-leaf-left"></span>
+      <span class="impact-leaf impact-leaf-right"></span>
+    </div>
+    <div class="impact-strip-copy">
+      <h2 id="impact-strip-title">Small acts. Big impact. Stronger communities.</h2>
+      <p>Thank you for being part of something good.</p>
+    </div>
+  </section>
 </section>
